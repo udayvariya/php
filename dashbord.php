@@ -112,19 +112,19 @@ else{
           <div class="modal-body">
             <input type="hidden" name="snoEdit" id="snoEdit">
             <div class="form-group">
-              <label>Date</label>
+              <label>Date :</label>
               <input type="date" class="form-control" id="date" name="date">
             </div>
             <div class="form-group">
-              <label>Pagename</label>
+              <label>Pagename :</label>
               <input type="text" class="form-control" id="pagename" name="pagename">
             </div>
             <div class="form-group">
-              <label>Lineno</label>
+              <label>Lineno :</label>
               <input type="text" class="form-control" id="lineno" name="lineno">
             </div>
             <div class="form-group">
-              <label>Query</label>
+              <label>Query :</label>
               <textarea id="query" class="form-control" name="query" rows="3"></textarea>
             </div> 
           </div>
@@ -144,19 +144,19 @@ include "alert.php";
     <h2>Add a Note to Query</h2>
     <form action="dashbord.php" method="POST">
       <div class="form-group">
-        <label>Date</label>
+        <label>Date :</label>
         <input type="date" class="form-control" id="date" name="date">
       </div>
       <div class="form-group">
-        <label>Pagename</label>
+        <label>Pagename :</label>
         <input type="text" class="form-control" name="pagename">
       </div>
       <div class="form-group">
-        <label>Lineno</label>
+        <label>Lineno :</label>
         <input type="text" class="form-control" name="lineno">
       </div>
       <div class="form-group">
-        <label>Query</label>
+        <label>Query :</label>
         <textarea class="form-control" name="query" rows="3"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Add Note</button>

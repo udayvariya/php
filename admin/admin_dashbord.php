@@ -231,7 +231,7 @@ if($showAlert){
         pagename.value = pagename1;
         lineno.value = lineno1;
         query.value = query1;
-        comment = comment1;
+        comment.value = comment1;
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');
