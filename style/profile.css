@@ -1,0 +1,16 @@
+i{
+    height: 100px;
+    width: 100px;
+    align-items: center;
+    justify-content: center;
+    padding : 50px 50px;
+    text-decoration: none;
+    color: black;
+
+}
+h2{
+    margin-left: 500px;
+}
+body{
+    background-color: #e28e4a;
+}
