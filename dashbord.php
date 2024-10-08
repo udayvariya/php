@@ -77,7 +77,7 @@ else{
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
   <link rel="stylesheet" href="/project/style/dashbord.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js" integrity="sha512-OlF0YFB8FRtvtNaGojDXbPT7LgcsSB3hj0IZKaVjzFix+BReDmTWhntaXBup8qwwoHrTHvwTxhLeoUqrYY9SEw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <title>user</title>
+  <title>USER</title>
   
 </head>
 
@@ -129,7 +129,8 @@ else{
             </div> 
           </div>
           <div class="modal-footer d-block mr-auto">
-            <button type="button" class="btn btn-secondary">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+          
             <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
@@ -216,9 +217,24 @@ include "alert.php";
   });
 </script>
 
-  <script>
+<!-- import sweet alert -->
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+import Swal from 'sweetalert2'
+  // or via CommonJS
+const Swal = require('sweetalert2')
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+</script>
+
+
+<script>
+  
+
       edits = document.getElementsByClassName('edit');
-    Array.from(edits).forEach((element) => {
+      Array.from(edits).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit ");
         tr = e.target.parentNode.parentNode;

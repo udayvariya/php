@@ -205,6 +205,18 @@ if($showAlert){
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
   
   
+<!-- import sweet alert -->
+<script src="sweetalert2.min.js"></script>
+<link rel="stylesheet" href="sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+import Swal from 'sweetalert2'
+  // or via CommonJS
+const Swal = require('sweetalert2')
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+</script>
+
   <script>
   $(document).ready(function(){
     $("#myInput").on("keyup", function() {
@@ -244,14 +256,21 @@ if($showAlert){
         console.log("edit ");
         sno = e.target.id.substr(1);
 
-        if (confirm("Are you sure you want to delete this note!")) {
-          console.log("yes");
-          window.location = `contect.php?delete=${sno}`;
-          // TODO: Create a form and use post request to submit a form
-        }
-        else {
-          console.log("no");
-        }
+        Swal.fire({
+            title: "Do you want to Delete?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+            denyButtonText: `can't Delete `
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              Swal.fire("Delete!", "", "success");
+              window.location = `admin_dashbord.php?delete=${sno}`;
+        } else if (result.isDenied) {
+        Swal.fire("Can Not Deleted!", "", "info");
+      }
+      });
       })
     })
   </script>
