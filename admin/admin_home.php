@@ -2,8 +2,15 @@
 session_start();
         if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
         header("location: admin_login.php");
+        $msg = true;
         }
+
+        
+
+// include "/project/hide.php";
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +20,9 @@ session_start();
 
 </head>
 <body>
+    <?php
+
+    ?>
 
     <div class="main">
         <div class="navbar">

@@ -62,8 +62,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $result = mysqli_query($conn,$sql);
         if($result){
             if(mysqli_num_rows($result) == 0){
-
-            $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`,`password`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno' , '$password')";
+            $status = "Inactive";
+            $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`,`password`,`status`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno' , '$password','$status')";
             $result = mysqli_query($conn, $sql);
             if ($result){
                 // echo "sucessfull";

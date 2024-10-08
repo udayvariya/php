@@ -3,11 +3,12 @@
 session_start();
         if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
         header("location: login.php");
-      
-        }
+        
+      }
 $insert = false;
 $update = false;
 $delete = false;
+$msg = false;
 
 include '_dbconnect.php';
 
@@ -82,7 +83,17 @@ else{
 </head>
 
 <body>
- 
+ <?php
+ $msg = false;
+  if($msg = true){
+    echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error! logout First </strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+    </button>
+    </div> ';
+  }
+ ?>
 <div class="navbar">
             <div class="icon">
                 <h3 class="logo">PHP</h2>
@@ -164,8 +175,11 @@ include "alert.php";
     </form>
   </div>
   <div class="search">
-  <label><b>  Search Date : </b></label>
+  <label><b>  Start Date : </b></label>
     <input id="myInput" type="text" placeholder="Search..">
+    <label><b> End Date : </b></label>
+    <input type="text"  id="myInput" placeholder="Search..">
+    <input type="button" value="Submit" >
   </div>
   <div class="container my-4">
 

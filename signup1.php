@@ -2,6 +2,11 @@
 include "hide.php";
 $showAlert = false;
 $showError = false;
+$fname = true;
+$lname = true;
+$mail = true;
+$mno = true;
+$pass = true;
 $file_nameErr = $firstnameErr = $lastnameErr = $emailErr = $mobilenoErr = $passwordErr = $cpasswordErr = "";
 $firstname = $lastname = $email = $mobileno = $password = $cpassword = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -19,27 +24,41 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $firstname = ($_POST["firstname"]);
             if (!preg_match("/^[a-zA-Z-' ]*$/",$firstname)) {
                 $firstnameErr = "Only letters and white space allowed";
+                $fname = false;
               }
           }
         
           if (empty($_POST["lastname"])) {
             $lastnameErr = " * Lastname is required";
+
           } else {
             $lastname = ($_POST["lastname"]);
             if (!preg_match("/^[a-zA-Z-' ]*$/",$lastname)) {
                 $lastnameErr = "Only letters and white space allowed";
+                $lname = false;
               }
           }
 
           if (empty($_POST["email"])) {
             $emailErr = " * email is required";
+
           } else {
             $email = ($_POST["email"]);
                 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $emailErr = "Invalid email format";
+                    $mail = false;
                 }
           }
         
+          // if (empty($_POST["mobileno"])) {
+          //   $mobilenoErr = " * mobileno is required";
+
+          // } else {
+          //   $mobileno = ($_POST['mobileno']);
+          //       if ($mobileno>10) {
+          //           $mobilenoErr = "Invalid mobileno format";
+          //       }
+          // }
           if (empty($_POST["mobileno"])) {
             $mobilenoErr = " * mobileno is required";
           } else {
@@ -48,13 +67,22 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $passwordErr = "Invalid mobileno format";
                 }
           }
-
+         
           if (empty($_POST["password"])) {
             $passwordErr = " * password is required";
-          } else {
+            $pass = false;
+
+          } 
+          else {
             $password = ($_POST["password"]);
-                if ($password>8) {
-                    $passwordErr = "Invalid password format";
+                // if (!$password>8) {
+                //     $passwordErr = "Invalid password format";
+                // }
+
+                $pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/';
+                if (!preg_match($pattern, $password)) {
+                  // echo "Invalid Password";
+                  $pass = false;
                 }
           }
 
@@ -72,7 +100,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $result = mysqli_query($conn,$sql);
         if($result){
             if(mysqli_num_rows($result) == 0){
-
+              if($pass==true && $fname==true && $lname==true && $mail==true && $mno==true){
                 if(($password == $cpassword) && $exists==false){
                 $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`, `password`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno', '$password')";
                 $result = mysqli_query($conn, $sql);
@@ -81,6 +109,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $showAlert = true;
                 }
                 else{
+                    echo "error!";
                     $showError = true;
                 }
                 // header("location: login.php");
@@ -88,6 +117,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 else{
                      echo "Passwords do not match";
                 }
+              }
+              else{
+                echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error! Not proper signup please try again</strong> '. $showError.'
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+                </div> ';
+
+              }
             }
             else{
                 echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -121,7 +160,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <body>
 <?php
 
-include "alert.php";
+if($showAlert == true){
+  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success!</strong> Your account is now created and you can login
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">×</span>
+      </button>
+      </div> ';
+}
+
 
 ?> 
     <div class="main">
@@ -145,7 +192,7 @@ include "alert.php";
                         <input type="text" name="mobileno" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
                         <label>Password:</label>
                         <input type="password" name="password" placeholder="Enter Password Here"><br><span class="error"><?php echo $passwordErr;?></span><br>
-                        <label>CPassword:</label>
+                        <label>Confirm Password:</label>
                         <input type="password" name="cpassword" placeholder="Enter Confirm Password Here"><br><span class="error"><?php echo $cpasswordErr;?></span><br>
                         <button class="btnn">Signup</button>
                         <p class="par">if you are already <a href="login.php">login</a></p>

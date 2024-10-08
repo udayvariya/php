@@ -2,6 +2,12 @@
 
 include "admin_hide.php";
 
+
+if(isset($_SESSION['loggedin']) || (isset($_SESSION['email']) && $_SESSION['email'] == true)){
+    header("location: /project/dashbord.php");
+    $msg = true;
+}
+
 $login = false;
 $showError = false;
 $logout = true; 
@@ -54,7 +60,8 @@ if($login){
         </button>
     </div> ';
     }
-    if($showError){
+    $msg = false;
+    if($msg == true){
     echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <strong>Error!</strong> '. $showError.'
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">

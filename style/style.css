@@ -125,8 +125,8 @@ ul li a:hover{
 }
 
 .form{
-    width: 250px;
-    height: 380px;
+    width: 330px;
+    height: 550px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8)50%,rgba(0,0,0,0.8)50%);
     position: absolute;
     top: -20px;

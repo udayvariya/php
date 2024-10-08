@@ -182,18 +182,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       element.addEventListener("click", (e) => {
         console.log("edit");
         tr = e.target.parentNode.parentNode;
-        // sno = tr.getElementsbyTagname("td")[0].innerText;
-        // profile_image1 = tr.getElementsByTagName("td")[0].innerText;
-        // firstname1 = tr.getElementsByTagName("td")[1].innerText;
-        // lastname1 = tr.getElementsByTagName("td")[2].innerText;
-        // email1 = tr.getElementsByTagName("td")[3].innerText;
-        // mobileno1 = tr.getElementsByTagName("td")[4].innerText;
-        // console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
-        // profile_image.value = profile_image1;
-        // firstname.value = firstname1;
-        // lastname.value = lastname1; 
-        // email.value = email1;
-        // mobileno.value = mobileno1;
+        // sno = tr.getElementsbyTagname("th")[1].innerText;
+        profile_image1 = tr.getElementsByTagName("td")[0][0].innerText;
+        // firstname1 = tr.getElementsByTagName("td")[1][1].innerText;
+        // lastname1 = tr.getElementsByTagName("td")[2][2].innerText;
+        // email1 = tr.getElementsByTagName("td")[3][3].innerText;
+        // mobileno1 = tr.getElementsByTagName("td")[4][4].innerText;
+        console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
+        profile_image.value = profile_image1;
+        firstname.value = firstname1;
+        lastname.value = lastname1; 
+        email.value = email1;
+        mobileno.value = mobileno1;
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');
