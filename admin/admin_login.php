@@ -3,11 +3,10 @@
 include "admin_hide.php";
 
 
-if(isset($_SESSION['loggedin']) || (isset($_SESSION['email']) && $_SESSION['email'] == true)){
-    header("location: /project/dashbord.php");
-    $msg = true;
-}
-
+// if(isset($_SESSION['loggedin']) || (isset($_SESSION['email']) && $_SESSION['email'] == true)){
+//     header("location: /project/dashbord.php");
+//     $msg = true;
+// }
 $login = false;
 $showError = false;
 $logout = true; 
