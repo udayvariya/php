@@ -114,12 +114,13 @@ else{
     <table class="table" id="myTable">
       <thead>
         <tr>
-          <th>S.No</th>
+          <th>Sno</th>
           <th>profile_image</th>
           <th>first name</th>
           <th>lastname</th>
           <th>email</th>
           <th>moblie no</th>
+          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -132,16 +133,14 @@ else{
           while($row = mysqli_fetch_assoc($result)){
             echo "<tr>
             <td>".$row['sno']."</td>
-            <td>";
-            if($row['profile_image']) {
-              echo "<img height='100px' width='130px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>";
-            }
-            echo "</td>
+            <td>
+              <img height='100px' width='130px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>
+            </td>
             <td>". $row['firstname'] . "</td>
             <td>". $row['lastname'] . "</td>
             <td>". $row['email'] . "</td>
             <td>". $row['mobileno'] . "</td>
-
+            <td>". $row['status'] . "</td>
             <td> <button class='edit btn btn-sm btn-primary' id=".$row['sno'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['sno'].">Delete</button>  </td>
 
             
@@ -159,13 +158,6 @@ else{
 <script src="sweetalert2.min.js"></script>
 <link rel="stylesheet" href="sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-import Swal from 'sweetalert2'
-  // or via CommonJS
-const Swal = require('sweetalert2')
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss'
-</script>
 
   <script>
     edits = document.getElementsByClassName('edit');
@@ -174,16 +166,17 @@ import 'sweetalert2/src/sweetalert2.scss'
         console.log("edit");
         tr = e.target.parentNode.parentNode;
         // sno = tr.getElementsbyTagname("td")[0].innerText;
-        // profile_image = tr.getElementsByTagName("td")[1].innerText;
-        // firstname = tr.getElementsByTagName("td")[2].innerText;
-        // lastname = tr.getElementsByTagName("td")[3].innerText;
-        // email = tr.getElementsByTagName("td")[4].innerText;
-        // mobileno = tr.getElementsByTagName("td")[5].innerText;
-        // console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
-        // profile_image.value = profile_image;
-        // firstname.value = firstname;
-        // lastname.value = lastname;
-        // email.value = email;
+        profile_image1 = tr.getElementsByTagName("td")[1].innerText;
+        firstname1 = tr.getElementsByTagName("td")[2].innerText;
+        lastname1 = tr.getElementsByTagName("td")[3].innerText;
+        email1 = tr.getElementsByTagName("td")[4].innerText;
+        mobileno1 = tr.getElementsByTagName("td")[5].innerText;
+        console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
+        profile_image.value = profile_image1;
+        firstname.value = firstname1;
+        lastname.value = lastname1;
+        email.value = email1;
+        mobileno.value = mobileno1;
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');
@@ -195,14 +188,6 @@ import 'sweetalert2/src/sweetalert2.scss'
       element.addEventListener("click", (e) => {
         console.log("edit ");
         sno = e.target.id.substr(1);
-
-        // if (confirm("Are you sure you want to delete this record!")) {
-        //   console.log("yes");
-        //   window.location = `student_profile.php?delete=${sno}`;
-        // }
-        // else {
-        //   console.log("no");
-        // }
         Swal.fire({
         title: "Are you sure you want to delete this student record!",
         showDenyButton: true,

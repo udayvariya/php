@@ -105,7 +105,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
     <table class="table" id="myTable">
-      
+    <thead>
+        <tr>
+          <!-- <th>S.No</th> -->
+          <th>profile_image</th>
+          <th>first name</th>
+          <th>lastname</th>
+          <th>email</th>
+          <th>moblie no</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+    
       <tbody>
         <?php 
 
@@ -114,31 +125,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           while($row = mysqli_fetch_assoc($result)){
             echo "
             <tr>
-            <th>Profile Image :</th>
-            <td>";
-            if($row['profile_image']) {
-              echo "<img height='130px' width='160px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>";
-            }
-            echo "</td>
-            </tr>
-            <tr>
-            <th>First Name :</th>
+            <td>
+              <img height='130px' width='160px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>
+            </td>
             <td>".$row['firstname']."</td>
-            </tr>
-            <tr>
-            <th>Lastname :</th>
             <td>".$row['lastname']."</td>
-            </tr>
-            <tr>
-            <th>Email :</th>
             <td>".$row['email']."</td>
-            </tr>
-            <tr>
-            <th>Moblie No :</th>
             <td>".$row['mobileno']."</td>
-            </tr>
-            <tr>        
-            <th><td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button></th> 
+            <td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button>
             </tr>
             <br><br>";
 
@@ -158,16 +152,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         console.log("edit");
         tr = e.target.parentNode.parentNode;
           // sno1 = tr.getElementsbyTagname("td")[0].innerText;
-          // profile_image1 = tr.getElementsByTagName("td")[1].innerText;
-          // firstname1 = tr.getElementsByTagName("td")[2].innerText;
-          // lastname1 = tr.getElementsByTagName("td")[3].innerText;
-          // email1 = tr.getElementsByTagName("td")[4].innerText;
-          // mobileno1 = tr.getElementsByTagName("td")[5].innerText;
-          // console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
-          // profile_image.value = profile_image1;
-          // firstname.value = firstname1;
-          // lastname.value = lastname1;
-          // email.value = email1;
+          profile_image1 = tr.getElementsByTagName("td")[0].innerText;
+          firstname1 = tr.getElementsByTagName("td")[1].innerText;
+          lastname1 = tr.getElementsByTagName("td")[2].innerText;
+          email1 = tr.getElementsByTagName("td")[3].innerText;
+          mobileno1 = tr.getElementsByTagName("td")[4].innerText;
+          console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
+          profile_image.value = profile_image1;
+          firstname.value = firstname1;
+          lastname.value = lastname1;
+          email.value = email1;
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');

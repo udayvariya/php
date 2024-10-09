@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
     <table class="table" id="myTable">
-      <!-- <thead>
+      <thead>
         <tr>
           <th>S.No</th>
           <th>profile_image</th>
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           <th>moblie no</th>
           <th>Action</th>
         </tr>
-      </thead> -->
+      </thead>
       <tbody>
         <?php 
 
@@ -136,32 +136,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           $result = mysqli_query($conn, $sql) or die("Query Failed.");
           while($row = mysqli_fetch_assoc($result)){
             echo "
+            
             <tr>
-            <th>Profile image : </th>
-            <td>";
-            if($row['profile_image']) {
-              echo "<img height='125px' width='150px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%;  cursor: pointer;'>";
-            }
-            echo "</td>
-            </tr>
-            <tr>
-            <th>First Name : </th>
+            <td>".$row['sno']."</td>
+            <td>
+              <img height='125px' width='150px' src='/project/images/" . ($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%;  cursor: pointer;'>
+            </td>
             <td>".$row['firstname']."</td>
-            </tr>
-            <tr>
-            <th>Last Name : </th>
             <td>".$row['lastname']."</td>
-            </tr>
-            <tr>
-          <th>Email : </th>
             <td>".$row['email']."</td>
-            </tr>
-            <tr>
-          <th>Moblie No :</th>
             <td>".$row['mobileno']."</td>
-            </tr>
-            <tr>        
-            <th><td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button></th> 
+            <td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button>
             </tr>
             <br><br>";
             break;
@@ -182,12 +167,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       element.addEventListener("click", (e) => {
         console.log("edit");
         tr = e.target.parentNode.parentNode;
-        // sno = tr.getElementsbyTagname("th")[1].innerText;
-        profile_image1 = tr.getElementsByTagName("td")[0][0].innerText;
-        // firstname1 = tr.getElementsByTagName("td")[1][1].innerText;
-        // lastname1 = tr.getElementsByTagName("td")[2][2].innerText;
-        // email1 = tr.getElementsByTagName("td")[3][3].innerText;
-        // mobileno1 = tr.getElementsByTagName("td")[4][4].innerText;
+        // sno = th.getElementsbyTagname("th")[1].innerText;
+        profile_image1 = tr.getElementsByTagName("td")[1].innerText;
+        firstname1 = tr.getElementsByTagName("td")[2].innerText;
+        lastname1 = tr.getElementsByTagName("td")[3].innerText;
+        email1 = tr.getElementsByTagName("td")[4].innerText;
+        mobileno1 = tr.getElementsByTagName("td")[5].innerText;
         console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
         profile_image.value = profile_image1;
         firstname.value = firstname1;

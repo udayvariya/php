@@ -46,14 +46,26 @@ else{
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <!-- import sweet alert -->
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <link rel="stylesheet" href="/project/style/admin_dashbord.css">
   <title>ADMIN</title>
   
@@ -150,10 +162,13 @@ if($showAlert){
 ?>
   <div class="container my-4">
   <div class="search">
-  <label><b>  Search Date : </b></label>
-    <input id="myInput" type="text" placeholder="Search..">
-  </div>
-<br>  
+  <label><b>  Start Date : </b></label>
+    <input id="startDate" type="date" name = "date1">
+  <label><b>  End Date : </b></label>
+    <input id="endDate" type="date" name="date2">
+    <button id="filterData">Search</button>
+    </div>
+  <br>  
     <table class="table">
       <thead>
         <tr>
@@ -166,14 +181,14 @@ if($showAlert){
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody  id="myTable">
+      <tbody  id="myTable"  data-date =". $row['date'] . ">
         <?php 
           $sql = "SELECT * FROM `query`";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
             $sno = $sno + 1;
-            echo "<tr>
+            echo "<tr data-date = ". $row['date'] .">
             <th scope='row'>". $sno . "</th>
             <td>". $row['date'] . "</td>
             <td>". $row['pagename'] . "</td>
@@ -193,40 +208,25 @@ if($showAlert){
   <hr>
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
-  <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-  
-  
-<!-- import sweet alert -->
-<script src="sweetalert2.min.js"></script>
-<link rel="stylesheet" href="sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-import Swal from 'sweetalert2'
-  // or via CommonJS
-const Swal = require('sweetalert2')
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss'
-</script>
-
   <script>
-  $(document).ready(function(){
-    $("#myInput").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("#myTable tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+  $(document).ready(function() {
+    $('#filterData').click(function() {
+        var startText = $('#startDate').val();
+        var endText = $('#endDate').val();
+        $('#myTable tr').each(function() {
+            var itemDateText = $(this).data('date');
+            if (itemDateText >= startText && itemDateText <= endText) {
+              //  10-10-2024 >= 01-09-2024  &&   29-09-2024 <= 01-10-2024 (true)
+                $(this).show();
+            } else {
+                $(this).hide(); 
+            }
+        });
     });
   });
+
 </script>
+
   <script>
     edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {
@@ -265,8 +265,8 @@ import 'sweetalert2/src/sweetalert2.scss'
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              Swal.fire("Delete!", "", "success");
               window.location = `admin_dashbord.php?delete=${sno}`;
+              Swal.fire("Delete!", "", "success");
         } else if (result.isDenied) {
         Swal.fire("Can Not Deleted!", "", "info");
       }

@@ -1,4 +1,5 @@
 <?php  
+$msg = false;
 
 session_start();
         if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
@@ -8,7 +9,6 @@ session_start();
 $insert = false;
 $update = false;
 $delete = false;
-$msg = false;
 
 include '_dbconnect.php';
 
@@ -76,16 +76,21 @@ else{
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-  <link rel="stylesheet" href="/project/style/dashbord.css">
+  <!-- import sweet alert -->
+  <script src="sweetalert2.min.js"></script>
+  <link rel="stylesheet" href="sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js" integrity="sha512-OlF0YFB8FRtvtNaGojDXbPT7LgcsSB3hj0IZKaVjzFix+BReDmTWhntaXBup8qwwoHrTHvwTxhLeoUqrYY9SEw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <link rel="stylesheet" href="/project/style/dashbord.css">
   <title>USER</title>
   
 </head>
 
 <body>
  <?php
- $msg = false;
-  if($msg = true){
+ 
+  if($msg){
     echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <strong>Error! logout First </strong>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -93,7 +98,33 @@ else{
     </button>
     </div> ';
   }
- ?>
+  
+if($insert){
+  echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+  <strong>Success!</strong> Your note has been inserted successfully
+  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+    <span aria-hidden='true'>×</span>
+  </button>
+</div>";
+}
+if($delete){
+  echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+  <strong>Success!</strong> Your note has been deleted successfully
+  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+    <span aria-hidden='true'>×</span>
+  </button>
+</div>";
+}
+if($update){
+  echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+  <strong>Success!</strong> Your note has been updated successfully
+  <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+    <span aria-hidden='true'>×</span>
+  </button>
+</div>";
+}
+?>
+
 <div class="navbar">
             <div class="icon">
                 <h3 class="logo">PHP</h2>
@@ -149,9 +180,6 @@ else{
     </div>
   </div>
 
-<?php
-include "alert.php";
-?>
   <div class="container my-4">
     <h2>Add a Note to Query</h2>
     <form action="dashbord.php" method="POST">
@@ -176,11 +204,12 @@ include "alert.php";
   </div>
   <div class="search">
   <label><b>  Start Date : </b></label>
-    <input id="myInput" type="text" placeholder="Search..">
-    <label><b> End Date : </b></label>
-    <input type="text"  id="myInput" placeholder="Search..">
-    <input type="button" value="Submit" >
-  </div>
+    <input id="startDate" type="date" name = "date1">
+  <label><b>  End Date : </b></label>
+    <input id="endDate" type="date" name="date2">
+    <button id="filterData" >Search</button>
+    </div>
+    
   <div class="container my-4">
 
     <table class="table" >
@@ -195,14 +224,14 @@ include "alert.php";
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody id="myTable">
+      <tbody id="myTable"  data-date =". $row['date'] . ">
         <?php 
           $sql = "SELECT * FROM `query`";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
             $sno = $sno + 1;
-            echo "<tr>
+            echo "<tr data-date = ". $row['date'] .">
             <th scope='row'>". $sno . "</th>
             <td>". $row['date'] . "</td>
             <td>". $row['pagename'] . "</td>
@@ -220,50 +249,46 @@ include "alert.php";
     </table>
   </div>
   <hr>
-  <script>
-  $(document).ready(function(){
-    $("#myInput").on("keyup", function() {
-      var value = $(this).val().toLowerCase();
-      $("#myTable tr").filter(function() {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-      });
+
+<!-- Search date -->
+<script>
+  $(document).ready(function() {
+    $('#filterData').click(function() {
+        var startText = $('#startDate').val();
+        var endText = $('#endDate').val();
+        $('#myTable tr').each(function() {
+            var itemDateText = $(this).data('date');
+            if (itemDateText >= startText && itemDateText <= endText) {
+              //  10-10-2024 >= 01-09-2024  &&   29-09-2024 <= 01-10-2024 (true)
+                $(this).show();
+            } else {
+                $(this).hide(); 
+            }
+        });
     });
   });
+
 </script>
-
-<!-- import sweet alert -->
-<script src="sweetalert2.min.js"></script>
-<link rel="stylesheet" href="sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- edit Query -->
 <script>
-import Swal from 'sweetalert2'
-  // or via CommonJS
-const Swal = require('sweetalert2')
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss'
-</script>
-
-
-<script>
-  
-
-      edits = document.getElementsByClassName('edit');
-      Array.from(edits).forEach((element) => {
-      element.addEventListener("click", (e) => {
-        console.log("edit ");
-        tr = e.target.parentNode.parentNode;
-        date1 = tr.getElementsByTagName("td")[0].innerText;
-        pagename1 = tr.getElementsByTagName("td")[1].innerText;
-        lineno1 = tr.getElementsByTagName("td")[2].innerText;
-        query1 = tr.getElementsByTagName("td")[3].innerText;
-        console.log(date1,pagename1,lineno1,query1);
-        date.value = date1;
-        pagename.value = pagename1;
-        lineno.value = lineno1;
-        query.value = query1;
-        snoEdit.value = e.target.id;
-        console.log(e.target.id)
-        $('#editModal').modal('toggle');
+edits = document.getElementsByClassName('edit');
+// console.log(edits);
+Array.from(edits).forEach((element) => {
+element.addEventListener("click", (e) => {
+  // console.log("edit ");
+  tr = e.target.parentNode.parentNode;
+  date1 = tr.getElementsByTagName("td")[1].innerText;
+  pagename1 = tr.getElementsByTagName("td")[2].innerText;
+  lineno1 = tr.getElementsByTagName("td")[3].innerText;
+  query1 = tr.getElementsByTagName("td")[4].innerText;
+  console.log(date1,pagename1,lineno1,query1);
+  date.value = date1;
+  pagename.value = pagename1;
+  lineno.value = lineno1;
+  query.value = query1;
+  snoEdit.value = e.target.id;
+  console.log(e.target.id)
+  $('#editModal').modal('toggle');
       })
     })
 
@@ -273,13 +298,6 @@ import 'sweetalert2/src/sweetalert2.scss'
       element.addEventListener("click", (e) => {
         console.log("edit ");
         sno = e.target.id.substr(1);
-
-        // if (confirm("Are you sure you want to delete this note!")) {
-        //   console.log("yes");
-        // }
-        // else {
-          //   console.log("no");
-          // }
           Swal.fire({
             title: "Do you want to Delete?",
             showDenyButton: true,
@@ -289,8 +307,8 @@ import 'sweetalert2/src/sweetalert2.scss'
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              Swal.fire("Delete!", "", "success");
               window.location = `dashbord.php?delete=${sno}`;
+              Swal.fire("Delete!", "", "success");
         } else if (result.isDenied) {
         Swal.fire("Can Not Deleted!", "", "info");
       }
