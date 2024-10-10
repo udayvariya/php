@@ -1,7 +1,3 @@
-<?php
-include "hide.php";
-?>  
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

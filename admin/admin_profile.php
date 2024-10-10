@@ -1,12 +1,6 @@
 <?php
 
-
-session_start();
-        if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: admin_login.php");
-
-        }
-
+include "page_hide.php";
 include "_dbconnect.php";
 
 
@@ -162,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           firstname.value = firstname1;
           lastname.value = lastname1;
           email.value = email1;
+          mobileno.value = mobileno1
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');

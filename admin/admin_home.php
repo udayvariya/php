@@ -1,14 +1,5 @@
 <?php
-session_start();
-        if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: admin_login.php");
-        // $msg = true;
-        }
-
-        
-
-// include "/project/hide.php";
-
+include "page_hide.php";
 ?>
 
 
@@ -33,7 +24,7 @@ session_start();
             <div class="menu">
                 <ul>
                     <li><a href="admin_home.php">HOME</a></li>
-                    <li><a href="signup_user.php">USER_SIGNUP</a></li>
+                    <li><a href="signup_user1.php">USER_SIGNUP</a></li>
                     <li><a href="admin_dashbord.php">DASHBORD</a></li>
                     <li><a href="admin_profile.php">Profile </a></li>
                     <li><a href="student_profile.php">Student_Details</a></li>

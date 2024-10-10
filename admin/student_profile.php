@@ -1,12 +1,6 @@
 <?php
 
-
-session_start();
-        if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: admin_login.php");
-
-        }
-        
+include "page_hide.php";        
 include "_dbconnect.php";
 
 if(isset($_GET['delete'])){
@@ -56,6 +50,9 @@ else{
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- sweet alert  -->
+     <script src="sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>ADMIN</title>
     <link rel="stylesheet" href="/project/style/profile.css">
@@ -71,7 +68,7 @@ else{
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <form action="profile.php" method="POST">
+        <form action="student_profile.php" method="POST">
           <div class="modal-body">
             <input type="hidden" name="snoEdit" id="snoEdit">
             <div class="form-group">
@@ -92,11 +89,10 @@ else{
             </div> 
             <div class="form-group">
               <label>mobileno</label>
-              <input type="text" class="form-control" id="mobileno" name="mobileno">
+              <input type="text" class="form-control" id="mobileno" name="mobileno" maxlength="10">
             </div> 
           </div>
           <div class="modal-footer d-block mr-auto">
-            <!-- <button type="button" class="btn btn-secondary">Close</button> -->
             <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
@@ -126,7 +122,6 @@ else{
       </thead>
       <tbody>
         <?php 
-          // session_start();
 
           $sql = "SELECT * FROM `data`";
           $result = mysqli_query($conn, $sql);
@@ -134,7 +129,7 @@ else{
             echo "<tr>
             <td>".$row['sno']."</td>
             <td>
-              <img height='100px' width='130px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>
+              <img height='110px' width='140px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>
             </td>
             <td>". $row['firstname'] . "</td>
             <td>". $row['lastname'] . "</td>
@@ -151,14 +146,8 @@ else{
 
       </tbody>
     </table>
-    <!-- <p><a href="forget.php">Forget Password</a></p> -->
   </div>
   
-<!-- import sweet alert -->
-<script src="sweetalert2.min.js"></script>
-<link rel="stylesheet" href="sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   <script>
     edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {

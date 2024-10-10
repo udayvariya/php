@@ -21,7 +21,7 @@ body{
 }
 
 .menu{
-    width: 400px;
+    width: 600px;
     float: left;
     height: 70px;
 }
@@ -56,4 +56,10 @@ ul li a:hover{
     margin-left: 785px;
     margin-right: auto;
     font-size: 20px;
+}
+td{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  
 }

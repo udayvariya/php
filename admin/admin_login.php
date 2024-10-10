@@ -1,12 +1,8 @@
 <?php
 
 include "admin_hide.php";
+include "admin";
 
-
-// if(isset($_SESSION['loggedin']) || (isset($_SESSION['email']) && $_SESSION['email'] == true)){
-//     header("location: /project/dashbord.php");
-//     $msg = true;
-// }
 $login = false;
 $showError = false;
 $logout = true; 

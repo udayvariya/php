@@ -2,7 +2,9 @@
 
 session_start();
         if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: login.php");
+        // header("location: login.php");
+        header("location:javascript://history.go(-1)");
+
         }
 include "_dbconnect.php";
 
@@ -132,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <tbody>
         <?php 
 
-          $sql = "SELECT * FROM `data`";
+          $sql = "SELECT * FROM `data` where email = '$_SESSION[email]'";
           $result = mysqli_query($conn, $sql) or die("Query Failed.");
           while($row = mysqli_fetch_assoc($result)){
             echo "
@@ -149,14 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button>
             </tr>
             <br><br>";
-            break;
           }
-          
-        
-      
           ?>
-
-
       </tbody>
     </table>
     <p><a href="/project/forget.php">Forget Password</a></p>

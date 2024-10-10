@@ -1,11 +1,7 @@
 
 <?php  
+include "page_hide.php";
 
-session_start();
-        if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: admin_login.php");
-        $msg = true;
-        }
 $insert = false;
 $update = false;
 $delete = false;
@@ -36,6 +32,7 @@ if (isset( $_POST['snoEdit'])){
 }
 else{
     echo "We could not update the record successfully";
+    $showError = true;
 }
 }
 
@@ -72,7 +69,29 @@ else{
 </head>
 
 <body>
- 
+<?php
+
+
+
+if($update){
+  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <strong>Success!</strong>Record updated sucessfully.
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">×</span>
+  </button>
+  </div> ';
+  
+}
+if($showError){
+echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <strong>Error!</strong> '. $showError.'
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  <span aria-hidden="true">×</span>
+      </button>
+  </div> ';
+}
+
+?>
 <div class="navbar">
             <div class="icon">
                 <h3 class="logo">PHP</h2>
@@ -82,7 +101,6 @@ else{
                 <ul>
                     <li><a href="admin_home.php">HOME</a></li>
                     <li><a href="admin_logout.php">logout</a></li>
-                    <li><a href="admin_profile.php">Profile Update</a></li>
                 </ul>
             </div>
 
@@ -124,42 +142,14 @@ else{
             </div> 
           </div>
           <div class="modal-footer d-block mr-auto">
-            <!-- <button type="button" class="btn btn-secondary">Close</button> -->
-            <button type="submit" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-<?php
-// include "alert.php";
 
-if($login){
-  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Success!</strong> You are logged in
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">×</span>
-  </button>
-  </div> ';
-  
-}
-if($showError){
-echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error!</strong> '. $showError.'
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">×</span>
-      </button>
-  </div> ';
-}
-if($showAlert){
-  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success!</strong> Your account is now created and you can login
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span>
-      </button>
-      </div> ';
-}
-?>
   <div class="container my-4">
   <div class="search">
   <label><b>  Start Date : </b></label>
@@ -181,7 +171,7 @@ if($showAlert){
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody  id="myTable"  data-date =". $row['date'] . ">
+      <tbody  id="myTable"  >
         <?php 
           $sql = "SELECT * FROM `query`";
           $result = mysqli_query($conn, $sql);
@@ -206,8 +196,7 @@ if($showAlert){
     
   </div>
   <hr>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  
   <script>
   $(document).ready(function() {
     $('#filterData').click(function() {
@@ -263,7 +252,6 @@ if($showAlert){
             confirmButtonText: "Delete",
             denyButtonText: `can't Delete `
           }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               window.location = `admin_dashbord.php?delete=${sno}`;
               Swal.fire("Delete!", "", "success");

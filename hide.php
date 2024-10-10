@@ -5,4 +5,4 @@ if(isset($_SESSION['loggedin']) || (isset($_SESSION['email']) && $_SESSION['emai
     header("location:javascript://history.go(-1)");
     $msg = true;
 }
-?>
+?>  

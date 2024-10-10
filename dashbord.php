@@ -3,9 +3,8 @@ $msg = false;
 
 session_start();
         if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: login.php");
-        
-      }
+        header("location:javascript://history.go(-1)");   
+      }    
 $insert = false;
 $update = false;
 $delete = false;
@@ -58,11 +57,8 @@ else{
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
@@ -76,7 +72,6 @@ else{
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-  <!-- import sweet alert -->
   <script src="sweetalert2.min.js"></script>
   <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -133,7 +128,7 @@ if($update){
             <div class="menu">
                 <ul>
                     <li><a href="/project/logout.php">logout</a></li>
-                    <li><a href="profile.php">Profile Update</a></li>
+                    <li><a href="profile.php">Profile</a></li>
                 </ul>
             </div>
 
@@ -224,7 +219,7 @@ if($update){
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody id="myTable"  data-date =". $row['date'] . ">
+      <tbody id="myTable">
         <?php 
           $sql = "SELECT * FROM `query`";
           $result = mysqli_query($conn, $sql);
@@ -243,8 +238,6 @@ if($update){
           </tr>";
         } 
           ?>
-
-
       </tbody>
     </table>
   </div>
@@ -277,10 +270,10 @@ Array.from(edits).forEach((element) => {
 element.addEventListener("click", (e) => {
   // console.log("edit ");
   tr = e.target.parentNode.parentNode;
-  date1 = tr.getElementsByTagName("td")[1].innerText;
-  pagename1 = tr.getElementsByTagName("td")[2].innerText;
-  lineno1 = tr.getElementsByTagName("td")[3].innerText;
-  query1 = tr.getElementsByTagName("td")[4].innerText;
+  date1 = tr.getElementsByTagName("td")[0].innerText;
+  pagename1 = tr.getElementsByTagName("td")[1].innerText;
+  lineno1 = tr.getElementsByTagName("td")[2].innerText;
+  query1 = tr.getElementsByTagName("td")[3].innerText;
   console.log(date1,pagename1,lineno1,query1);
   date.value = date1;
   pagename.value = pagename1;
@@ -292,7 +285,7 @@ element.addEventListener("click", (e) => {
       })
     })
 
-
+// delete model 
     deletes = document.getElementsByClassName('delete');
     Array.from(deletes).forEach((element) => {
       element.addEventListener("click", (e) => {
@@ -305,7 +298,6 @@ element.addEventListener("click", (e) => {
             confirmButtonText: "Delete",
             denyButtonText: `can't Delete `
           }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
               window.location = `dashbord.php?delete=${sno}`;
               Swal.fire("Delete!", "", "success");
