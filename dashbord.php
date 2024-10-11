@@ -3,7 +3,8 @@ $msg = false;
 
 session_start();
         if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location:javascript://history.go(-1)");   
+        // header("location:javascript://history.go(-1)");   
+        header("location: login.php");
       }    
 $insert = false;
 $update = false;
@@ -78,7 +79,7 @@ else{
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js" integrity="sha512-OlF0YFB8FRtvtNaGojDXbPT7LgcsSB3hj0IZKaVjzFix+BReDmTWhntaXBup8qwwoHrTHvwTxhLeoUqrYY9SEw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
   <link rel="stylesheet" href="/project/style/dashbord.css">
-  <title>USER</title>
+  <title>User_dashbord</title>
   
 </head>
 
@@ -127,8 +128,8 @@ if($update){
 
             <div class="menu">
                 <ul>
-                    <li><a href="/project/logout.php">logout</a></li>
-                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="/project/logout.php">LOGOUT</a></li>
+                    <li><a href="profile.php">PROFILE</a></li>
                 </ul>
             </div>
 
@@ -195,7 +196,7 @@ if($update){
         <textarea class="form-control" name="query" rows="3"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Add Note</button>
-    </form>
+      </form>
   </div>
   <div class="search">
   <label><b>  Start Date : </b></label>
@@ -221,7 +222,7 @@ if($update){
       </thead>
       <tbody id="myTable">
         <?php 
-          $sql = "SELECT * FROM `query`";
+          $sql = "SELECT * FROM `query`ORDER BY `query`.`date` ASC";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){

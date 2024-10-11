@@ -6,15 +6,10 @@ include "page_hide.php";
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>ADMIN</title>
+    <title>Admin_home</title>
     <link rel="stylesheet" href="/project/style/admin_home.css">
-
 </head>
 <body>
-    <?php
-
-    ?>
-
     <div class="main">
         <div class="navbar">
             <div class="icon">
@@ -26,8 +21,8 @@ include "page_hide.php";
                     <li><a href="admin_home.php">HOME</a></li>
                     <li><a href="signup_user1.php">USER_SIGNUP</a></li>
                     <li><a href="admin_dashbord.php">DASHBORD</a></li>
-                    <li><a href="admin_profile.php">Profile </a></li>
-                    <li><a href="student_profile.php">Student_Details</a></li>
+                    <li><a href="admin_profile.php">PROFILE</a></li>
+                    <li><a href="student_profile.php">STUDENT_DETAILS</a></li>
                     <li><a href="admin_logout.php">LOGOUT</a></li>
 
 

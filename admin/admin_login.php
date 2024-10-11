@@ -1,11 +1,11 @@
 <?php
 
 include "admin_hide.php";
-include "admin";
 
 $login = false;
 $showError = false;
 $logout = true; 
+$error = false;
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     include '_dbconnect.php';
@@ -19,14 +19,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if ($num >0 ){
         $login = true;
         session_start();
-        $_SESSION['loggedin'] = true;
-        $_SESSION['email'] = $email;
+        $_SESSION['loggedin1'] = true;
+        $_SESSION['email1'] = $email;
         
 
         header("location: admin_home.php");
     } 
     else{
-        $showError = "Invalid Credentials";
+        $error = " * Invalid Candidate";
     }
 }
     
@@ -42,7 +42,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
-    <title>ADMIN</title>
+    
+    
+    <title>Admin_login</title>
     <link rel="stylesheet" href="/project/style/admin_login.css">    
 </head>
 <body>
@@ -94,7 +96,7 @@ if($login){
                 <div class="form">
                     <h2>Login Admin</h2>
                     <input type="text" name="email" placeholder="Enter email Here">
-                    <input type="password" name="password" placeholder="Enter Password Here">
+                    <input type="password" name="password" placeholder="Enter Password Here"><br><br><h4 style="color: red;"><?php echo $error;?></h4>
                     <button class="btnn">Login</a></button>
 
                     <p class="link">Change Password</p><br>

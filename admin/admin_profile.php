@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
       
-    <title>ADMIN</title>
+    <title>Admin_profile</title>
     <link rel="stylesheet" href="/project/style/admin_profile.css">
 </head>
 <body>

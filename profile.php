@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     
-  <title>Document</title>
+  <title>User_profile</title>
     <style>
         i{
             height: 100px;

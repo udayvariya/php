@@ -63,8 +63,10 @@ else{
   <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <link rel="stylesheet" href="/project/style/admin_dashbord.css">
-  <title>ADMIN</title>
+  <!-- <link rel="stylesheet" href="/project/style/admin_dashbord.css"> -->
+  <link rel="stylesheet" href="/project/style/admin_dashbord1.css">
+
+  <title>Admin_dashbord</title>
   
 </head>
 
@@ -93,6 +95,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
 
 ?>
 <div class="navbar">
+      
             <div class="icon">
                 <h3 class="logo">PHP</h2>
             </div>
@@ -100,7 +103,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <div class="menu">
                 <ul>
                     <li><a href="admin_home.php">HOME</a></li>
-                    <li><a href="admin_logout.php">logout</a></li>
+                    <li><a href="admin_logout.php">LOGOUT</a></li>
                 </ul>
             </div>
 
@@ -162,6 +165,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <table class="table">
       <thead>
         <tr>
+          <center>
           <th>S.No</th>
           <th>date</th>
           <th>pagename</th>
@@ -169,6 +173,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
           <th>query</th>
           <th>comment</th>
           <th>Actions</th>
+          </center>
         </tr>
       </thead>
       <tbody  id="myTable"  >

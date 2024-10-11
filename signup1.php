@@ -53,11 +53,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
           if (empty($_POST["mobileno"])) {
             $mobilenoErr = " * mobileno is required";
           } else {
-            if ($mobileno>11) {
-              $mobilenoErr = "Invalid mobile no format";
-              $mno = false;
+            $mono = $_POST['mobileno'];
+            if(preg_match("/[^a-zA-Z-' ]*$/", $mono)){
+            // if ($mobileno>11) {
+              $mobileno = ($_POST['mobileno']);
+          
             }else{
-            $mobileno = ($_POST['mobileno']);
+            $mobilenoErr = "Invalid mobile no format";
+            $mno = false;
           }}
          
           if (empty($_POST["password"])) {
@@ -87,20 +90,32 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             if(mysqli_num_rows($result) == 0){
               if($pass==true && $fname==true && $lname==true && $mail==true && $mno==true){
                 if(($password == $cpassword) && $exists==false){
-                $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`, `password`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno', '$password')";
+                  $status = "Active";
+                // $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`, `password`, `status`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno', '$password','')";
+                $sql = "INSERT INTO `data`(`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`, `password`, `status`, `resettoken`, `resettokenexp`) VALUES ('','$file_name','$firstname','$lastname','$email','$mobileno','$password','$status','','')";
                 $result = mysqli_query($conn, $sql);
                 if ($result){
                     // echo "sucessfull";
                     $showAlert = true;
                 }
                 else{
-                    echo "error!";
-                    $showError = true;
+                  echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <strong>Error! Not proper signup please try again</strong> '. $showError.'
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                  </button>
+                  </div> ';
+                  $mobilenoErr = "Invalid mobile no format";
                 }
                 // header("location: login.php");
                 }
                 else{
-                     echo "Passwords do not match";
+                     echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error! Password does not match</strong> '. $showError.'
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+                </button>
+                </div> ';
                 }
               }
               else{
@@ -137,12 +152,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <!-- <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script> -->
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/project/style/signup.css">
-    <title>SignUp</title>
+    <title>Signup</title>
 
   </head>
 <body>
@@ -176,8 +190,8 @@ if($showAlert == true){
                         <input type="text" name="lastname" placeholder="Enter lastname Here"><br><span class="error"><?php echo $lastnameErr;?></span><br>
                         <label>Email:</label>
                         <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
-                        <label>Mobile NO:</label>
-                        <input type="text" name="mobileno" maxlength="10" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
+                        <label>Mobile No:</label>
+                        <input type="text" name="mobileno" maxlength="10  " placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
                         <label>Password:</label>
                         <input type="password" name="password" placeholder="Enter Password Here"><br><span class="error"><?php echo $passwordErr;?></span><br>
                         <label>Confirm Password:</label>

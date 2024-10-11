@@ -54,7 +54,7 @@ else{
     <link rel="stylesheet" href="sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <title>ADMIN</title>
+    <title>Student_profile</title>
     <link rel="stylesheet" href="/project/style/profile.css">
 </head>
 <body>
@@ -124,10 +124,13 @@ else{
         <?php 
 
           $sql = "SELECT * FROM `data`";
-          $result = mysqli_query($conn, $sql);
-          while($row = mysqli_fetch_assoc($result)){
-            echo "<tr>
-            <td>".$row['sno']."</td>
+          $result = mysqli_query($conn, $sql); 
+
+            $sno = 0;
+            while($row = mysqli_fetch_assoc($result)){
+              $sno = $sno + 1;
+              echo "<tr>
+              <td scope='row'>". $sno . "</td>
             <td>
               <img height='110px' width='140px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>
             </td>
@@ -186,8 +189,8 @@ else{
         }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
-          window.location = `student_profile.php?delete=${sno}`;
           Swal.fire("Delete!", "", "success");
+          window.location = `student_profile.php?delete=${sno}`;
         } else if (result.isDenied) {
             Swal.fire("Not deleted", "", "info");
         }

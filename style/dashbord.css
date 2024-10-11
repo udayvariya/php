@@ -24,10 +24,12 @@ body{
     width: 400px;
     float: left;
     height: 70px;
+
 }
 
 ul{
-    float: left;
+    float: right;
+    margin-right: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
