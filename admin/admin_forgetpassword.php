@@ -1,17 +1,16 @@
 <?php
-    include "_dbconnect.php";
 
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\SMTP;
-    use PHPMailer\PHPMailer\Exception;
 
-    function sendMail($email,$reset_token){
-        echo $email;
-        echo $reset_token;
-        echo "<br>";
-        require('/project/phpmaier/PHPMailer.php');
-        require('/project/phpmaier/SMTP.php');
-        require('/project/phpmaier/Exception.php');
+        include "_dbconnect.php";
+
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\SMTP;
+        use PHPMailer\PHPMailer\Exception;
+
+    function sendmail($email,$reset_token){
+        require('C:\xampp2\htdocs\project\phpmailer\PHPMailer.php');
+        require('C:\xampp2\htdocs\project\phpmailer\SMTP.php');
+        require('C:\xampp2\htdocs\project\phpmailer\Exception.php');
 
         $mail = new PHPMailer(true);
 
@@ -20,8 +19,8 @@
             $mail->isSMTP();                                            //Send using SMTP
             $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'udayvariya302@gmail.com';                //SMTP username
-            $mail->Password   = 'Uday@2757';                               //SMTP password
+            $mail->Username   = 'udayvariya302@gmail.com';                     //SMTP username
+            $mail->Password   = 'cdmzvuphceldiyia';                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         
@@ -35,15 +34,13 @@
             $mail->Subject = 'Password Reset Link from uday';
             $mail->Body    = "we got request the reset password link <br>
             click the link below : <br>
-            <a href='http://localhost/php/updatepassword.php?email=$email&reset_token=$reset_token'>Reset Password</a>";
+            <a href='http://localhost/project/admin/admin_updatepassword.php?email=$email&reset_token=$reset_token'>Reset Password</a>";
         
             $mail->send();
             return true;
         }
         catch (Exception $e) {
-            // return false;
-            echo "not completed";
-            echo "<br>";
+            return false;
         }
 
     }
@@ -56,15 +53,21 @@
             $reset_token = bin2hex(random_bytes(16));
             date_default_timezone_set('Asia/kolkata');
             $date=date('y-m-d');
+
             $sql = "UPDATE `admin_data` SET `resettoken`='$reset_token',`resettokenexp`='$date' WHERE email='$_POST[email]'";
-            if(mysqli_query($conn,$sql) && sendMail($_POST['email'],$reset_token)){
-                echo "complete to send mail";
-            
-        
+            if(mysqli_query($conn,$sql)  && sendMail($_POST['email'],$reset_token)){
+                echo '
+                    <script>
+                    alert("Resent password link send to email address");
+                    </script>
+                ';
             }
             else{
-                echo "server dwon try again leter";
-                
+                echo '
+                    <script>
+                    alert("server dwon try again leter");
+                    </script>
+                ';
             }
 
         }

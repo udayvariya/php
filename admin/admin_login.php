@@ -18,6 +18,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $num = mysqli_num_rows($result);
     if ($num >0 ){
         $login = true;
+        // session_name('session2');
         session_start();
         $_SESSION['loggedin1'] = true;
         $_SESSION['email1'] = $email;
@@ -26,7 +27,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         header("location: admin_home.php");
     } 
     else{
-        $error = " * Invalid Candidate";
+        $error = " *Invalid Candidate";
     }
 }
     

@@ -1,5 +1,49 @@
 <?php
+include '_dbconnect.php';
 include "page_hide.php";
+
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+function sendmail($email,$reset_token){
+require('C:\xampp2\htdocs\project\phpmailer\PHPMailer.php');
+require('C:\xampp2\htdocs\project\phpmailer\SMTP.php');
+require('C:\xampp2\htdocs\project\phpmailer\Exception.php');
+
+$mail = new PHPMailer(true);
+
+try {
+    //Server settings
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'udayvariya302@gmail.com';                     //SMTP username
+    $mail->Password   = 'cdmzvuphceldiyia';                               //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+    //Recipients
+    $mail->setFrom('udayvariya302@gmail.com', 'UDAY PASS');
+    $mail->addAddress($email);     //Add a recipient
+
+    
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject = 'Set Your New Password';
+    $mail->Body    = "we got request the reset password link <br>
+    click the link below : <br>
+    <a href='http://localhost/project/updatepassword.php?email=$email&reset_token=$reset_token'>Create Password</a>";
+
+    $mail->send();
+    return true;
+} 
+catch (Exception $e) {
+    return false;
+}
+
+}
 
 $showAlert = false;
 $showError = false;
@@ -10,7 +54,6 @@ $mno = true;
 $file_nameErr = $firstnameErr = $lastnameErr = $emailErr = $mobilenoErr =  "";
 $firstname = $lastname = $email = $mobileno = "";
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    include '_dbconnect.php';
     if(isset($_FILES['image'])){
         $file_name = $_FILES['image']['name'];
         $file_size = $_FILES['image']['size'];
@@ -93,8 +136,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`,`password`,`status`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno','$password', '$status')";
                 $result = mysqli_query($conn, $sql);
                 if ($result){
-                    // echo "sucessfull";
-                    $showAlert = true;
+                    // $showAlert = true;
+                    // header("location: /project/forgetpassword.php");
+                                
+                    $reset_token = bin2hex(random_bytes(16));
+                    date_default_timezone_set('Asia/kolkata');
+                    $date=date('y-m-d');
+
+                    $sql = "UPDATE `data` SET `resettoken`='$reset_token',`resettokenexp`='$date' WHERE email='$_POST[email]'";
+                    if(mysqli_query($conn,$sql)  && sendMail($_POST['email'],$reset_token)){
+                      echo '
+                        <script>
+                        alert("Resent password link send to email address");
+                        </script>
+                      ';
+                      // header("location: login.php");
+                    }
+                    else{
+                      echo '
+                      <script>
+                      alert("server dwon try again leter");
+                      </script>
+                      ';
+                    }
                 }
                 else{
                     echo "error!";
@@ -116,7 +180,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
               }
               else{
                 echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error! Invalid Formate please fill all</strong> 
+                <strong>Error! Email Is Already Exits.</strong> 
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">×</span>
                 </button>
@@ -148,7 +212,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <!-- <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script> -->
     <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule="" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
@@ -189,7 +252,7 @@ if($showAlert == true){
                         <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
                         <label>Mobile NO:</label>
                         <input type="text" name="mobileno" maxlength="10" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
-                        <button class="btnn">Signup</button>
+                        <button class="btnn" name="send-email-link">Signup</button>
                     </form>
                </div>
     </div>

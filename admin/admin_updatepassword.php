@@ -4,8 +4,7 @@ include "_dbconnect.php";
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
     $password = $_POST['password'];
     $email = $_POST['email'];
-    $status = "Active";
-    $sql = "UPDATE `data` SET `password`='$password',`status`='$status' WHERE `email` = '$email'";
+    $sql = "UPDATE `admin_data` SET `password`='$password' WHERE `email` = '$email'";
     $query = mysqli_query($conn,$sql);
     if($query){
         echo "    <script>
@@ -38,13 +37,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if(isset($_GET['email']) && isset($_GET['reset_token'])){
         date_default_timezone_set('Asia/kolkata');
         $date=date('y-m-d');
-        $sql = "SELECT * FROM `data` where `email`= '$_GET[email]' AND `resettoken`='$_GET[reset_token]' AND `resettokenexp`='$date'";
+        $sql = "SELECT * FROM `admin_data` where `email`= '$_GET[email]' AND `resettoken`='$_GET[reset_token]' AND `resettokenexp`='$date'";
         $result = mysqli_query($conn,$sql);
         if($result){
             if(mysqli_num_rows($result) == 1){
                 echo "
                     <div class='container'>
-                    <form action='updatepassword.php' method = 'POST'>
+                    <form action='admin_updatepassword.php' method = 'POST'>
                     <label>Create New Password</label><br>
                     <input type='password' name='password' placeholder='Enter New Password'>
                     <button type='submit' name 'updatepassword'>UPDATE</button>

@@ -1,9 +1,5 @@
 <?php
 
-session_start();
-        if(!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] == false){
-        header("location: /poject/admin/admin_login.php");
-        }
 
         include "_dbconnect.php";
 
@@ -12,11 +8,9 @@ session_start();
         use PHPMailer\PHPMailer\Exception;
 
     function sendmail($email,$reset_token){
-        echo $email;
-        echo $reset_token;
-        require('/project/phpmaier/PHPMailer.php');
-        require('/project/phpmaier/SMTP.php');
-        require('/project/phpmaier/Exception.php');
+        require('C:\xampp2\htdocs\project\phpmailer\PHPMailer.php');
+        require('C:\xampp2\htdocs\project\phpmailer\SMTP.php');
+        require('C:\xampp2\htdocs\project\phpmailer\Exception.php');
 
         $mail = new PHPMailer(true);
 
@@ -26,7 +20,7 @@ session_start();
             $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
             $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
             $mail->Username   = 'udayvariya302@gmail.com';                     //SMTP username
-            $mail->Password   = 'Uday@2757';                               //SMTP password
+            $mail->Password   = 'cdmzvuphceldiyia';                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
         
@@ -37,10 +31,10 @@ session_start();
             
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
-            $mail->Subject = 'Password Reset Link from uday';
+            $mail->Subject = 'Password Reset Link from Uday';
             $mail->Body    = "we got request the reset password link <br>
             click the link below : <br>
-            <a href='http://localhost/php/updatepassword.php?email=$email&reset_token=$reset_token'>Reset Password</a>";
+            <a href='http://localhost/project/updatepassword.php?email=$email&reset_token=$reset_token'>Reset Password</a>";
         
             $mail->send();
             return true;
@@ -56,7 +50,7 @@ session_start();
     if($result){
         if(mysqli_num_rows($result) == 1){
             
-            $reset_token = "123456abcd";
+            $reset_token = bin2hex(random_bytes(16));
             date_default_timezone_set('Asia/kolkata');
             $date=date('y-m-d');
 
@@ -67,7 +61,8 @@ session_start();
                     alert("Resent password link send to email address");
                     </script>
                 ';
-            }
+            header("location: login.php");
+}
             else{
                 echo '
                     <script>

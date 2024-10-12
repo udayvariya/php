@@ -5,6 +5,7 @@ include "hide.php";
 $login = false;
 $showError = false;
 $logout = true; 
+$error = false;
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     include '_dbconnect.php';
     $email = $_POST["email"];
@@ -18,12 +19,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $login = true;
         session_start();
         $_SESSION['loggedin'] = true;
-        $_SESSION['email'] = $email;
+        $_SESSION['email'] = $email;    
 
         header("location: dashbord.php");
     } 
     else{
-        $showError = true;
+        $error = "*Invalid candidate";
     }
 }   
 ?>
@@ -87,7 +88,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <div class="form">
                     <h2>Login Here</h2>
                     <input type="text" name="email" placeholder="Enter email Here">
-                    <input type="password" name="password" placeholder="Enter Password Here">
+                    <input type="password" name="password" placeholder="Enter Password Here"><br><h4 style="color: red;"><?php echo $error;?></h4>
                     <button class="btnn">Login</a></button>
 
                     <p class="link">Don't have an account<br>
