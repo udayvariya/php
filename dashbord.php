@@ -6,7 +6,6 @@ session_start();
         header("location: login.php");
       }    
 
-      
 $insert = false;
 $update = false;
 $delete = false;
@@ -40,8 +39,8 @@ else{
     $pagename = $_POST["pagename"];
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
-
-  $sql = "INSERT INTO `query` (`sno`, `date`, `pagename`, `lineno`, `query`) VALUES ('', '$date', '$pagename', '$lineno', '$query')";
+    $username = $_SESSION["username"]; 
+  $sql = "INSERT INTO `query` (`sno`, `date`,`username`, `pagename`, `lineno`, `query`) VALUES ('', '$date','$username,' '$pagename', '$lineno', '$query')";
   $result = mysqli_query($conn, $sql);
 
    
@@ -213,17 +212,20 @@ if($update){
       <thead>
         <tr>
           <th>S.No</th>
-          <th>date</th>
-          <th>pagename</th>
-          <th>lineno</th>
-          <th>query</th>
-          <th> admin comment</th>
+          <th>Date</th>
+          <th>Pagename</th>
+          <th>Lineno</th>
+          <th>Query</th>
+          <th>Admin comment</th>
           <th>Actions</th>
         </tr>
-      </thead>
+      </thead>  
       <tbody id="myTable">
         <?php 
-          $sql = "SELECT * FROM `query`ORDER BY `query`.`date` ASC";
+        $sql = "SELECT * FROM `query` WHERE `email` = '$_SESSION[email]'";
+        $result= mysqli_query($conn,$sql);
+        if($result){
+          $sql = "SELECT * FROM `query`ORDER BY `query`.`sno` desc";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
@@ -239,6 +241,7 @@ if($update){
             <td> <button class='edit btn btn-sm btn-primary' id=".$row['sno'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['sno'].">Delete</button>  </td>
           </tr>";
         } 
+      }
           ?>
       </tbody>
     </table>

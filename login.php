@@ -11,6 +11,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $email = $_POST["email"];
     $password = $_POST["password"]; 
     $status = "Active";
+    
      
     $sql = "Select * from data where email='$email' AND password='$password' AND status= '$status'";
     $result = mysqli_query($conn, $sql);
@@ -20,7 +21,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         session_start();
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $email;    
-
+        $_SESSION['username'] = $username;
         header("location: dashbord.php");
     } 
     else{

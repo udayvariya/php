@@ -242,15 +242,15 @@ if($showAlert == true){
                  <div class="form">
                     <form action="signup_user1.php" method="post" enctype="multipart/form-data">
                         <h2>Signup Here</h2>
-                        <label>Select image:</label>
+                        <label>Select Image:</label>
                         <input type="file" name="image"><br>
-                        <label>first name:</label>
+                        <label>First Name:</label>
                         <input type="text" name="firstname" placeholder="Enter firstname Here"><br><span class="error"><?php echo $firstnameErr;?></span><br>
-                        <label>Last name:</label>
+                        <label>Last Name:</label>
                         <input type="text" name="lastname" placeholder="Enter lastname Here"><br><span class="error"><?php echo $lastnameErr;?></span><br>
                         <label>Email:</label>
                         <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
-                        <label>Mobile NO:</label>
+                        <label>Mobile No:</label>
                         <input type="text" name="mobileno" maxlength="10" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
                         <button class="btnn" name="send-email-link">Signup</button>
                     </form>

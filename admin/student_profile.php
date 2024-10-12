@@ -72,15 +72,15 @@ else{
           <div class="modal-body">
             <input type="hidden" name="snoEdit" id="snoEdit">
             <div class="form-group">
-              <label>profile_image</label>
+              <label>Profile_image</label>
               <input type="file" class="form-control" id="profile_image" name="profile_image">
             </div>
             <div class="form-group">
-              <label>firstname</label>
+              <label>Firstname</label>
               <input type="text" class="form-control" id="firstname" name="firstname">
             </div>
             <div class="form-group">
-              <label>lastname</label>
+              <label>Lastname</label>
               <input type="text" class="form-control" id="lastname" name="lastname">
             </div>
             <div class="form-group">
@@ -88,7 +88,7 @@ else{
               <input type="text" class="form-control" id="email" name="email">
             </div> 
             <div class="form-group">
-              <label>mobileno</label>
+              <label>Mobileno</label>
               <input type="text" class="form-control" id="mobileno" name="mobileno" maxlength="10">
             </div> 
           </div>
@@ -111,11 +111,11 @@ else{
       <thead>
         <tr>
           <th>Sno</th>
-          <th>profile_image</th>
-          <th>first name</th>
-          <th>lastname</th>
-          <th>email</th>
-          <th>moblie no</th>
+          <th>Profile_image</th>
+          <th>First name</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>Moblie No</th>
           <th>Status</th>
           <th>Action</th>
         </tr>

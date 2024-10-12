@@ -123,11 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <thead>
         <tr>
           <th>S.No</th>
-          <th>profile_image</th>
-          <th>first name</th>
-          <th>lastname</th>
-          <th>email</th>
-          <th>moblie no</th>
+          <th>Profile_image</th>
+          <th>First name</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>Moblie no</th>
           <th>Action</th>
         </tr>
       </thead>

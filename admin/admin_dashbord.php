@@ -124,23 +124,23 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
           <div class="modal-body">
             <input type="hidden" name="snoEdit" id="snoEdit">
             <div class="form-group">
-              <label>date</label>
+              <label>Date</label>
               <input type="date" class="form-control" id="date" name="date">
             </div>
             <div class="form-group">
-              <label>pagename</label>
+              <label>Pagename</label>
               <input type="text" class="form-control" id="pagename" name="pagename">
             </div>
             <div class="form-group">
-              <label>lineno</label>
+              <label>Lineno</label>
               <input type="text" class="form-control" id="lineno" name="lineno">
             </div>
             <div class="form-group">
-              <label>query</label>
+              <label>Query</label>
               <textarea id="query" class="form-control" name="query" rows="3"></textarea>
             </div> 
             <div class="form-group">
-              <label>comment</label>
+              <label>Comment</label>
               <textarea id="comment" class="form-control" name="comment" rows="5"></textarea>
             </div> 
           </div>
@@ -165,20 +165,19 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <table class="table">
       <thead>
         <tr>
-          <center>
           <th>S.No</th>
-          <th>date</th>
-          <th>pagename</th>
-          <th>lineno</th>
-          <th>query</th>
-          <th>comment</th>
+          <th>Date</th>
+          <th>Username</th>
+          <th>Pagename</th>
+          <th>Lineno</th>
+          <th>Query</th>
+          <th>Comment</th>
           <th>Actions</th>
-          </center>
         </tr>
       </thead>
       <tbody  id="myTable"  >
         <?php 
-          $sql = "SELECT * FROM `query`";
+          $sql = "SELECT * FROM `query` ORDER BY `query`.`sno` desc";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
@@ -186,6 +185,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
             echo "<tr data-date = ". $row['date'] .">
             <th scope='row'>". $sno . "</th>
             <td>". $row['date'] . "</td>
+            <td>". $row['email'] ."</td>
             <td>". $row['pagename'] . "</td>
             <td>". $row['lineno'] . "</td>
             <td>". $row['query'] . "</td>
@@ -228,11 +228,12 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
         console.log("edit ");
         tr = e.target.parentNode.parentNode;
         date1 = tr.getElementsByTagName("td")[0].innerText;
-        pagename1 = tr.getElementsByTagName("td")[1].innerText;
-        lineno1 = tr.getElementsByTagName("td")[2].innerText;
-        query1 = tr.getElementsByTagName("td")[3].innerText;
-        comment1 = tr.getElementsByTagName("td")[4].innerText;
-        console.log(date1,pagename1,lineno1,query1,comment1);
+        username1 = tr.getElementsByTagName("td")[1].innerText
+        pagename1 = tr.getElementsByTagName("td")[2].innerText;
+        lineno1 = tr.getElementsByTagName("td")[3].innerText;
+        query1 = tr.getElementsByTagName("td")[4].innerText;
+        comment1 = tr.getElementsByTagName("td")[5].innerText;
+        console.log(date1,username1,pagename1,lineno1,query1,comment1);
         date.value = date1;
         pagename.value = pagename1;
         lineno.value = lineno1;
