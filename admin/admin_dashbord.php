@@ -14,7 +14,7 @@ include '_dbconnect.php';
 if(isset($_GET['delete'])){
   $sno = $_GET['delete'];
   $delete = true;
-  $sql = "DELETE FROM `query` WHERE `sno` = $sno";
+  $sql = "DELETE FROM `query` WHERE `qid` = $sno";
   $result = mysqli_query($conn, $sql);
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -25,7 +25,7 @@ if (isset( $_POST['snoEdit'])){
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
     $comment = $_POST["comment"];
-  $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' ,`comment` = '$comment' WHERE `query`.`sno` = $sno";
+  $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' ,`comment` = '$comment' WHERE `query`.`qid` = $sno";
   $result = mysqli_query($conn, $sql);
   if($result){
     $update = true;
@@ -63,8 +63,11 @@ else{
   <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+  
   <!-- <link rel="stylesheet" href="/project/style/admin_dashbord.css"> -->
-  <link rel="stylesheet" href="/project/style/admin_dashbord1.css">
+  <link rel="stylesheet" href="/project/style/admin_dashbord.css">
+
+
 
   <title>Admin_dashbord</title>
   
@@ -167,7 +170,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <tr>
           <th>S.No</th>
           <th>Date</th>
-          <th>Username</th>
+          <th>Firstname</th>
           <th>Pagename</th>
           <th>Lineno</th>
           <th>Query</th>
@@ -177,7 +180,16 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
       </thead>
       <tbody  id="myTable"  >
         <?php 
-          $sql = "SELECT * FROM `query` ORDER BY `query`.`sno` desc";
+          $recordsPerPage = 5; // Number of records to show per page
+          if(isset($_GET['page'])){
+          $page  = $_GET['page'];
+          }
+          else{
+            $page = 1;
+          }
+          $offset = ($page-1) * $recordsPerPage;
+
+          $sql = "SELECT `data`.firstname, `query`.* FROM `data` INNER JOIN `query` ON `data`.sno = query.sno LIMIT {$offset},{$recordsPerPage}";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
@@ -185,20 +197,39 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
             echo "<tr data-date = ". $row['date'] .">
             <th scope='row'>". $sno . "</th>
             <td>". $row['date'] . "</td>
-            <td>". $row['email'] ."</td>
+            <td>". $row['firstname'] . "</td>
             <td>". $row['pagename'] . "</td>
             <td>". $row['lineno'] . "</td>
             <td>". $row['query'] . "</td>
             <td>". $row['comment'] . "</td>
-            <td> <button class='edit btn btn-sm btn-primary' id=".$row['sno'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['sno'].">Delete</button>  </td>
+            <td> <button class='edit btn btn-sm btn-primary' id=".$row['qid'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['qid'].">Delete</button>  </td>
           </tr>";
-        } 
+        }
           ?>
 
 
-      </tbody>
-    </table>
+</tbody>
+</table>
+<?php
+    $sql1 = "SELECT * FROM query";
+    $result = mysqli_query($conn,$sql1);
     
+    if(mysqli_num_rows($result) > 0){
+      $total_record = mysqli_num_rows($result);
+      $totalPages = ceil($total_record / $recordsPerPage);
+      echo '<ul class="pagination">';
+      for ($i=1; $i <= $totalPages; $i++) { 
+        if($i == $page){
+          $active = "active";
+        }
+        else{
+          $active = "";
+        }
+        echo '<li class = "'.$active.'"><a href="?page='.$i.'">'.$i.'</a></li>';
+      }
+      echo '</ul>';
+    }
+    ?>
   </div>
   <hr>
   

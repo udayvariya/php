@@ -19,7 +19,7 @@ if(isset($_GET['delete'])){
   $result = mysqli_query($conn, $sql);
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-if (isset( $_POST['snoEdit'])){
+if (isset( $_POST['snoEdit'])){ 
     $sno = $_POST["snoEdit"];   
     $date = $_POST["date"];
     $pagename = $_POST["pagename"];
@@ -35,12 +35,19 @@ else{
 }
 }
 else{
+  $sql = "SELECT * FROM `data` where email = '$_SESSION[email]'";
+  $result = mysqli_query($conn, $sql) or die("Query Failed.");
+  while($row = mysqli_fetch_assoc($result)){
+    $sno = $row['sno'];
+    $username = $row['firstname'];
+  }
     $date = $_POST["date"];
+    // $uid = $_SESSION['sno'];
     $pagename = $_POST["pagename"];
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
-    $username = $_SESSION["username"]; 
-  $sql = "INSERT INTO `query` (`sno`, `date`,`username`, `pagename`, `lineno`, `query`) VALUES ('', '$date','$username,' '$pagename', '$lineno', '$query')";
+    // $username = $_SESSION["username"]; 
+  $sql = "INSERT INTO `query` (`qid`,`sno`, `date`,`pagename`, `lineno`, `query`) VALUES ('','$sno','$date', '$pagename', '$lineno', '$query')";
   $result = mysqli_query($conn, $sql);
 
    
@@ -222,10 +229,17 @@ if($update){
       </thead>  
       <tbody id="myTable">
         <?php 
-        $sql = "SELECT * FROM `query` WHERE `email` = '$_SESSION[email]'";
-        $result= mysqli_query($conn,$sql);
-        if($result){
-          $sql = "SELECT * FROM `query`ORDER BY `query`.`sno` desc";
+          // $sql = "SELECT * FROM `data` where `email` = '$_SESSION[email]' ";
+          // $result = mysqli_query($conn,$sql);
+          // while($row = mysqli_fetch_assoc($result)){
+          // $name = ". $row[firstname].";
+          // $uid = $_SESSION['sno'];
+          $sql = "SELECT * FROM `data` where email = '$_SESSION[email]'";
+          $result = mysqli_query($conn, $sql) or die("Query Failed.");
+          while($row = mysqli_fetch_assoc($result)){
+          $sno = $row['sno'];
+            }
+          $sql = "SELECT * FROM `query` WHERE `sno` = '$sno' ORDER BY `query`.`sno` desc";
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
@@ -241,7 +255,7 @@ if($update){
             <td> <button class='edit btn btn-sm btn-primary' id=".$row['sno'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['sno'].">Delete</button>  </td>
           </tr>";
         } 
-      }
+          // }
           ?>
       </tbody>
     </table>

@@ -64,3 +64,20 @@ td{
     white-space: nowrap;
   
 }
+.pagination {
+    display: inline-block;
+  }
+  
+  .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+
+  .pagination strong{
+    height: 20px;
+    width:100%;
+    background-color: #1c94f0  ;
+
+  }

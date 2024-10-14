@@ -16,12 +16,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $sql = "Select * from data where email='$email' AND password='$password' AND status= '$status'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
+    // while(mysqli_fetch_assoc($result)){
+        // $uid = $row['sno'];
+        // $uid = $_POST['sno'];
+    // }
     if ($num == 1){
         $login = true;
         session_start();
         $_SESSION['loggedin'] = true;
         $_SESSION['email'] = $email;    
-        $_SESSION['username'] = $username;
+        // $_SESSION['sno'] = $_GET['sno']; 
+        // $_SESSION['username'] = $username;
         header("location: dashbord.php");
     } 
     else{
