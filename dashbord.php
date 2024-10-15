@@ -9,15 +9,16 @@ session_start();
 $insert = false;
 $update = false;
 $delete = false;
+$showmsg = false;
 
 include '_dbconnect.php';
 
 if(isset($_GET['delete'])){
   $sno = $_GET['delete'];
   $delete = true;
-  $sql = "DELETE FROM `query` WHERE `sno` = $sno";
+  $sql = "DELETE FROM `query` WHERE `qid` = $sno";
   $result = mysqli_query($conn, $sql);
-}
+} 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 if (isset( $_POST['snoEdit'])){ 
     $sno = $_POST["snoEdit"];   
@@ -25,15 +26,19 @@ if (isset( $_POST['snoEdit'])){
     $pagename = $_POST["pagename"];
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
-  $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' WHERE `query`.`sno` = $sno";
+  if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
+  $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' WHERE `query`.`qid` = $sno";
   $result = mysqli_query($conn, $sql);
   if($result){
     $update = true;
   }
-else{
+  else{
     echo "We could not update the record successfully";
+  }
+
 }
 }
+
 else{
   $sql = "SELECT * FROM `data` where email = '$_SESSION[email]'";
   $result = mysqli_query($conn, $sql) or die("Query Failed.");
@@ -47,18 +52,22 @@ else{
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
     // $username = $_SESSION["username"]; 
+  if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
   $sql = "INSERT INTO `query` (`qid`,`sno`, `date`,`pagename`, `lineno`, `query`) VALUES ('','$sno','$date', '$pagename', '$lineno', '$query')";
   $result = mysqli_query($conn, $sql);
-
-   
-  if($result){ 
-      $insert = true;
+    if($result){ 
+        $insert = true;
+      }
+      else{
+        echo "The record was not inserted successfully because of this error ---> ". mysqli_error($conn);
+      } 
   }
   else{
-      echo "The record was not inserted successfully because of this error ---> ". mysqli_error($conn);
-  } 
+    $showmsg = true;
+  }
 }
 }
+
 ?>
 
 <!doctype html>
@@ -126,6 +135,14 @@ if($update){
   </button>
 </div>";
 }
+if($showmsg){
+  echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error! Please Fill All Filed </strong> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+        </button>
+    </div> ';
+  }
 ?>
 
 <div class="navbar">
@@ -143,8 +160,7 @@ if($update){
            
         </div>
   <!-- Edit Modal -->
-  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -153,9 +169,18 @@ if($update){
             <span aria-hidden="true">×</span>
           </button>
         </div>
+        <?php 
+          if(isset($_GET['edit'])){
+            $up_date = $_POST['date'];
+            $up_pagename = $_POST['pagename'];
+            $up_lineno = $_POST['lineno'];
+            $up_query = $_POST['query'];
+
+          }
+        ?>
         <form action="dashbord.php" method="POST">
           <div class="modal-body">
-            <input type="hidden" name="snoEdit" id="snoEdit">
+            <!-- <input type="hidden" name="snoEdit" id="snoEdit"> -->
             <div class="form-group">
               <label>Date :</label>
               <input type="date" class="form-control" id="date" name="date">
@@ -252,10 +277,11 @@ if($update){
             <td>". $row['query'] . "</td>
             <td>". $row['comment'] . "</td>
 
-            <td> <button class='edit btn btn-sm btn-primary' id=".$row['sno'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['sno'].">Delete</button>  </td>
+            <td> <a href = '#editModal?no=".$row['qid']."'><button class='edit btn btn-sm btn-primary'>Edit</button> </a>
+            <button class='delete btn btn-sm btn-primary' id=d".$row['qid'].">Delete</button>  </td>
           </tr>";
         } 
-          // }
+          
           ?>
       </tbody>
     </table>
@@ -284,22 +310,9 @@ if($update){
 <!-- edit Query -->
 <script>
 edits = document.getElementsByClassName('edit');
-// console.log(edits);
 Array.from(edits).forEach((element) => {
 element.addEventListener("click", (e) => {
-  // console.log("edit ");
-  tr = e.target.parentNode.parentNode;
-  date1 = tr.getElementsByTagName("td")[0].innerText;
-  pagename1 = tr.getElementsByTagName("td")[1].innerText;
-  lineno1 = tr.getElementsByTagName("td")[2].innerText;
-  query1 = tr.getElementsByTagName("td")[3].innerText;
-  console.log(date1,pagename1,lineno1,query1);
-  date.value = date1;
-  pagename.value = pagename1;
-  lineno.value = lineno1;
-  query.value = query1;
-  snoEdit.value = e.target.id;
-  console.log(e.target.id)
+  snoEdit = e.target.id;
   $('#editModal').modal('toggle');
       })
     })

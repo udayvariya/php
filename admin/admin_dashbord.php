@@ -8,6 +8,7 @@ $delete = false;
 $login  = false;
 $showAlert = false;
 $showError = false;
+$showmsg = false;
 
 include '_dbconnect.php';
 
@@ -25,15 +26,20 @@ if (isset( $_POST['snoEdit'])){
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
     $comment = $_POST["comment"];
+  if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
   $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' ,`comment` = '$comment' WHERE `query`.`qid` = $sno";
   $result = mysqli_query($conn, $sql);
-  if($result){
-    $update = true;
-}
-else{
-    echo "We could not update the record successfully";
-    $showError = true;
-}
+    if($result){
+      $update = true;
+      }
+      else{
+      echo "We could not update the record successfully";
+      $showError = true;
+      }
+    }
+    else{
+      $showmsg = true;
+    }
 }
 
 }
@@ -95,7 +101,14 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
       </button>
   </div> ';
 }
-
+if($showmsg){
+  echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Error! Please Fill All Filed </strong> 
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+        </button>
+    </div> ';
+  }
 ?>
 <div class="navbar">
       
@@ -188,8 +201,10 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
             $page = 1;
           }
           $offset = ($page-1) * $recordsPerPage;
-
-          $sql = "SELECT `data`.firstname, `query`.* FROM `data` INNER JOIN `query` ON `data`.sno = query.sno LIMIT {$offset},{$recordsPerPage}";
+                    // 1-1 *5 =0  record no starting to diplay 
+                    // 2-1 *5 = 5
+        
+          $sql = "SELECT `data`.firstname, `query`.* FROM `data` INNER JOIN `query` ON `data`.sno = query.sno ORDER BY `query`.`qid` DESC LIMIT {$offset},{$recordsPerPage} "; // {0}{3}  , 
           $result = mysqli_query($conn, $sql);
           $sno = 0;
           while($row = mysqli_fetch_assoc($result)){
@@ -206,8 +221,6 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
           </tr>";
         }
           ?>
-
-
 </tbody>
 </table>
 <?php
@@ -218,17 +231,29 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
       $total_record = mysqli_num_rows($result);
       $totalPages = ceil($total_record / $recordsPerPage);
       echo '<ul class="pagination">';
-      for ($i=1; $i <= $totalPages; $i++) { 
-        if($i == $page){
-          $active = "active";
-        }
-        else{
-          $active = "";
-        }
-        echo '<li class = "'.$active.'"><a href="?page='.$i.'">'.$i.'</a></li>';
+      if($page >1){
+        echo '<a href="?page='.($page-1).'"><li>Previous</li></a>';
       }
+      if($i = $page){
+        $active = "active";
+      }
+      else{
+        $active = "";
+      }
+      for ($i=1; $i <= $totalPages; $i++) { 
+        
+        echo '<a href="?page='.$i.'" ><li class = "'.$active.'">'.$i.'</li></a>';
+        
+      } 
+      if($totalPages > $page){
+      echo '<a href="?page='.($page+1).'"><li>Next</li></a>';
+      }
+        // if($totalPages>2){
+        //   echo '<a href="?page='.$i.'"><li>Next</li></a>';
+        // }
+      
       echo '</ul>';
-    }
+    } 
     ?>
   </div>
   <hr>
@@ -244,7 +269,7 @@ echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
               //  10-10-2024 >= 01-09-2024  &&   29-09-2024 <= 01-10-2024 (true)
                 $(this).show();
             } else {
-                $(this).hide(); 
+                $(this).hide();
             }
         });
     });
