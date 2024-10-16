@@ -6,7 +6,6 @@ session_start();
         header("location: login.php");
       }    
 
-
 $insert = false;
 $update = false;
 $delete = false;
@@ -14,98 +13,49 @@ $showmsg = false;
 
 include '_dbconnect.php';
 
-$dateErr = $pagenameErr = $linenoErr = $queryErr = $dateErr1 = $pagenameErr1 = $linenoErr1 = $queryErr1 = "";  
-  
 if(isset($_GET['delete'])){
   $sno = $_GET['delete'];
   $delete = true;
   $sql = "DELETE FROM `query` WHERE `qid` = $sno";
   $result = mysqli_query($conn, $sql);
-}
-if (isset($_REQUEST["edit"])) 
-		{
-      $sno = $_POST['qid'];
-      if (empty($_POST["date"])) {
-        $dateErr = " * Date is required";
-      } else {
-        $date = ($_POST["date"]);
-      }
-
-      if (empty($_POST["pagename"])) {
-        $pagenameErr = " * Pagename is required";
-      } else {
-        $pagename = ($_POST["pagename"]);
-      }
-
-      if (empty($_POST["lineno"])) {
-        $linenoErr = " * Lineno is required";
-      } else {
-        $lineno = ($_POST["lineno"]);
-      }
-
-      if (empty($_POST["query"])) {
-        $queryErr = " * Query is required";
-      } else {
-        $query = ($_POST["query"]);
-      }
-
-
-      // $date = $_POST['date'];
-      // $pagename = $_POST['pagename'];
-      // $lineno = $_POST['lineno'];
-      // $query = $_POST['query'];
-
-      if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
-      $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' WHERE `query`.`qid` = '$sno'";
-      $result = mysqli_query($conn, $sql) or die("Query Failed.");
-      if($result){   
-      
-        $update = true;
-      }
-      else{
-        echo "We could not update the record successfully";
-      }
-		}
-    else{
-      $showmsg = true;
-
-    }
+} 
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+if (!isset($_GET['edit'])){ 
+    // $qid = $_GET[""];
+    $sno = $_POST['qid'];
+    $date = $_POST["date"];
+    $pagename = $_POST["pagename"];
+    $lineno = $_POST["lineno"];
+    $query = $_POST["query"];
+  if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
+  $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' WHERE `query`.`qid` = '$sno'";
+  $result = mysqli_query($conn, $sql);
+  if($result){
+    $update = true;
   }
-elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
+  else{
+    echo "We could not update the record successfully";
+  }
+
+}
+else{
+  $showmsg = true;
+}
+}
+
+else{
+
   $sql = "SELECT * FROM `data` where email = '$_SESSION[email]'";
   $result = mysqli_query($conn, $sql) or die("Query Failed.");
   while($row = mysqli_fetch_assoc($result)){
     $sno = $row['sno'];
     $username = $row['firstname'];
   }
-  if (empty($_POST["date"])) {
-    $dateErr1 = " * Date is required";
-  } else {
-    $date = ($_POST["date"]);
-  }
-
-  if (empty($_POST["pagename"])) {
-    $pagenameErr1 = " * Pagename is required";
-  } else {
-    $pagename = ($_POST["pagename"]);
-  }
-
-  if (empty($_POST["lineno"])) {
-    $linenoErr1 = " * Lineno is required";
-  } else {
-    $lineno = ($_POST["lineno"]);
-  }
-
-  if (empty($_POST["query"])) {
-    $queryErr1 = " * Query is required";
-  } else {
-    $query = ($_POST["query"]);
-  }
-    // $date = $_POST["date"];
+    $date = $_POST["date"];
     // $uid = $_SESSION['sno'];
-    // $pagename = $_POST["pagename"];
-    // $lineno = $_POST["lineno"];
-    // $query = $_POST["query"];
+    $pagename = $_POST["pagename"];
+    $lineno = $_POST["lineno"];
+    $query = $_POST["query"];
     // $username = $_SESSION["username"]; 
   if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
   $sql = "INSERT INTO `query` (`qid`,`sno`, `date`,`pagename`, `lineno`, `query`) VALUES ('','$sno','$date', '$pagename', '$lineno', '$query')";
@@ -121,11 +71,8 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $showmsg = true;
   }
 }
-		
 
-
-
-
+}
 ?>
 
 <!doctype html>
@@ -193,15 +140,23 @@ if($update){
   </button>
 </div>";
 }
-if($showmsg){
-  echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Error! Please Fill All Filed </strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">×</span>
-        </button>
-    </div> ';
-  }
+// if($showmsg){
+//   echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
+//     <strong>Error! Please Fill All Filed </strong> 
+//     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+//     <span aria-hidden="true">×</span>
+//         </button>
+//     </div> ';
+//   }
 
+      // if(isset($_GET['edit'])){
+        // $up_qid = $_GET['GET'];
+        // $up_date = $_GET['DATE'];
+        // $up_pagename = $_GET['PAGENAME'];
+        // $up_lineno = $_GET['LINENO'];
+        // $up_query = $_GET['QUERY'];
+
+      // }
 ?>
 
 <div class="navbar">
@@ -219,7 +174,7 @@ if($showmsg){
            
         </div>
   <!-- Edit Modal -->
-  <div class="modal fade" id="editmodel" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+  <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -237,40 +192,31 @@ if($showmsg){
                 </button>
             </div> ';
           }
-    
-          // if(isset($_GET['edit'])){
-            $up_qid = "70";
-            $up_date ="09-09-2024";
-            $up_pagename = "uday";
-            $up_lineno ="722";
-            $up_query = "udaynvjnvjfjvfjvnjf";
-            // }
         ?>
         <form action="dashbord.php" method="POST">
-          
           <div class="modal-body">
-            <input type="hidden" name="qid" value="<?php echo"$up_qid";?>">
+            <input type="hidden" name="qid" >
             <div class="form-group">
               <label>Date :</label>
-              <input type="date" class="form-control" id="date" name="date" value="<?php echo"$up_date";?>"><br><span class="error"><?php echo $dateErr;?></span><br>
+              <input type="date" class="form-control" id="date" name="date" >
             </div>
             <div class="form-group">
               <label>Pagename :</label>
-              <input type="text" class="form-control" id="pagename" name="pagename" value="<?php echo"$up_pagename";?>"><br><span class="error"><?php echo $pagenameErr;?></span><br>
+              <input type="text" class="form-control" id="pagename" name="pagename" >
             </div>
             <div class="form-group">
               <label>Lineno :</label>
-              <input type="text" class="form-control" id="lineno" name="lineno" value="<?php echo"$up_lineno";?>"><br><span class="error"><?php echo $linenoErr;?></span><br>
+              <input type="text" class="form-control" id="lineno" name="lineno"   >
             </div>
             <div class="form-group">
               <label>Query :</label>
-              <textarea id="query" class="form-control" name="query" rows="3" value="<?php echo"$up_query";?>"></textarea><br><span class="error"><?php echo $queryErr;?></span><br>
+              <textarea id="query" class="form-control" name="query" rows="3" ></textarea>
             </div> 
           </div>
           <div class="modal-footer d-block mr-auto">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
           
-            <button type="submit" name="edit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
       </div>
@@ -282,19 +228,19 @@ if($showmsg){
     <form action="dashbord.php" method="POST">
       <div class="form-group">
         <label>Date :</label>
-        <input type="date" class="form-control" id="date" name="date"><span class="error"><?php echo $dateErr1;?></span>
+        <input type="date" class="form-control" id="date" name="date">
       </div>
       <div class="form-group">
         <label>Pagename :</label>
-        <input type="text" class="form-control" name="pagename"><span class="error"><?php echo $pagenameErr1;?></span>
+        <input type="text" class="form-control" name="pagename">
       </div>
       <div class="form-group">
         <label>Lineno :</label>
-        <input type="text" class="form-control" name="lineno"><span class="error"><?php echo $linenoErr1;?></span>
+        <input type="text" class="form-control" name="lineno">
       </div>
       <div class="form-group">
         <label>Query :</label>
-        <textarea class="form-control" name="query" rows="3"></textarea><span class="error"><?php echo $queryErr1;?></span>
+        <textarea class="form-control" name="query" rows="3"></textarea>
       </div>
       <button type="submit" class="btn btn-primary">Add Note</button>
       </form>
@@ -342,13 +288,12 @@ if($showmsg){
             <td>". $row['query'] . "</td>
             <td>". $row['comment'] . "</td>
 
-            <td>      
-            <a href = #editmodel?qid=".$row['qid']."&date=".$row['date']."&pagename=".$row['pagename']."&lineno=".$row['lineno']."&query=".$row['query']."'><button class='edit btn btn-sm btn-primary'>Edit</button></a>     
+                  
+            <td><a href = '#edit?QID=".$row['qid']."&DATE=".$row['date']."&PAGENAME=".$row['pagename']."&LINENO=".$row['lineno']."&QUERY=".$row['query']."'><button class='edit btn btn-sm btn-primary'>edit</button></a>
             <button class='delete btn btn-sm btn-primary' id=d".$row['qid'].">Delete</button>  </td>
-            </tr>";
-          } 
-          // <button class='edit btn btn-sm btn-primary' id=".$row['qid'].">Edit</button>
-          // <button class='edit btn btn-sm btn-primary' id=".$row['qid'].">Edit</button>
+          </tr>";
+        } 
+        // <button class='edit btn btn-sm btn-primary' id=".$row['qid'].">Edit</button>
             // <td> <a href = '#editModal?qid=".$row['qid']."'><button class='edit btn btn-sm btn-primary' qid=".$row['qid'].">Edit</button> </a>
 
           ?>
@@ -378,12 +323,14 @@ if($showmsg){
 </script>
 <!-- edit Query -->
 <script>
-$(document).ready(function() {
-  $(".edit").click(function() {
-    $("#editmodel").modal('show');
-    qid = e.target.id.substr(1);
-  });
-});
+edits = document.getElementsByClassName('edit');
+Array.from(edits).forEach((element) => {
+element.addEventListener("click", (e) => {
+  qid = e.target.id.substr(1);
+  $('#edit').modal('toggle');
+      })
+    })
+
 // delete model 
     deletes = document.getElementsByClassName('delete');
     Array.from(deletes).forEach((element) => {
