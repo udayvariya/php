@@ -47,6 +47,11 @@ catch (Exception $e) {
 
 $showAlert = false;
 $showError = false;
+$update = false;
+$showmsg = false;
+$login = false;
+$msg = false;
+
 $fname = true;
 $lname = true;
 $mail = true;
@@ -97,17 +102,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     $mail = false;
                 }
           } 
-          // if (empty($_POST["mobileno"])) {
-          //   $mobilenoErr = " * mobileno is required";
-          //   $mno = false;
-          // } else {
-          //   if ($mobileno>10) {
-          //     $passwordErr = "Invalid mobileno format";
-          //     $mno = false;
-          //   }else{
-          //   $mobileno = ($_POST['mobileno']);
-          // }}
-
+        
           if (empty($_POST["mobileno"])) {
             $mobilenoErr = " * mobileno is required";
           } else {
@@ -136,8 +131,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $sql = "INSERT INTO `data` (`sno`, `profile_image`, `firstname`, `lastname`, `email`, `mobileno`,`password`,`status`) VALUES ('', '$file_name', '$firstname', '$lastname', '$email', '$mobileno','$password', '$status')";
                 $result = mysqli_query($conn, $sql);
                 if ($result){
-                    // $showAlert = true;
-                    // header("location: /project/forgetpassword.php");
                                 
                     $reset_token = bin2hex(random_bytes(16));
                     date_default_timezone_set('Asia/kolkata');
@@ -199,11 +192,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             }
         }
     }
-
-
-    
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -217,44 +206,35 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/project/style/signup_user.css">
     <title>User_signup</title>
-
-  </head>
+</head>
 <body>
 <?php
-
-if($showAlert == true){
-  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success!</strong> Your account is now created and you can login
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span>
-      </button>
-      </div> ';
-}
-
-
+include "alert.php";
 ?> 
-    <div class="main">
-        <div class="navbar">
-            <div class="icon">
-                <h2 class="logo">PHP</h2>
-            </div>         
-        </div> 
-                 <div class="form">
-                    <form action="signup_user1.php" method="post" enctype="multipart/form-data">
-                        <h2>Signup Here</h2>
-                        <label>Select Image:</label>
-                        <input type="file" name="image"><br>
-                        <label>First Name:</label>
-                        <input type="text" name="firstname" placeholder="Enter firstname Here"><br><span class="error"><?php echo $firstnameErr;?></span><br>
-                        <label>Last Name:</label>
-                        <input type="text" name="lastname" placeholder="Enter lastname Here"><br><span class="error"><?php echo $lastnameErr;?></span><br>
-                        <label>Email:</label>
-                        <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
-                        <label>Mobile No:</label>
-                        <input type="text" name="mobileno" maxlength="10" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
-                        <button class="btnn" name="send-email-link">Signup</button>
-                    </form>
-               </div>
-    </div>
+
+<div class="main">
+  <div class="navbar">
+    <div class="icon">
+      <h2 class="logo">PHP</h2>
+    </div>         
+  </div> 
+  
+  <div class="form">
+      <form action="signup_user1.php" method="post" enctype="multipart/form-data">
+          <h2>Signup Here</h2>
+          <label>Select Image:</label>
+          <input type="file" name="image"><br>
+          <label>First Name:</label>
+          <input type="text" name="firstname" placeholder="Enter firstname Here"><br><span class="error"><?php echo $firstnameErr;?></span><br>
+          <label>Last Name:</label>
+          <input type="text" name="lastname" placeholder="Enter lastname Here"><br><span class="error"><?php echo $lastnameErr;?></span><br>
+          <label>Email:</label>
+          <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
+          <label>Mobile No:</label>
+          <input type="text" name="mobileno" maxlength="10" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
+          <button class="btnn" name="send-email-link">Signup</button> 
+      </form>
+  </div>
+</div>
 </body>
 </html>

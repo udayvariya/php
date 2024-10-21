@@ -2,6 +2,12 @@
 include "hide.php";
 $showAlert = false;
 $showError = false;
+$msg = false;
+$insert = false;
+$update = false;
+$delete = false;
+$showmsg = false;
+
 $fname = true;
 $lname = true;
 $mail = true;
@@ -161,45 +167,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
   </head>
 <body>
 <?php
-
-if($showAlert == true){
-  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-      <strong>Success!</strong> Your account is now created and you can login
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">×</span>
-      </button>
-      </div> ';
-}
-
-
+include "alert.php";
 ?> 
-    <div class="main">
-        <div class="navbar">
-            <div class="icon">
-                <h2 class="logo">PHP</h2>
-            </div>         
-        </div> 
-                 <div class="form">
-                    <form action="signup1.php" method="post" enctype="multipart/form-data">
-                        <h2>Signup Here</h2>
-                        <label>Select image:</label>
-                        <input type="file" name="image" id=""><br>
-                        <label>first name:</label>
-                        <input type="text" name="firstname" placeholder="Enter firstname Here"><br><span class="error"><?php echo $firstnameErr;?></span><br>
-                        <label>Last name:</label>
-                        <input type="text" name="lastname" placeholder="Enter lastname Here"><br><span class="error"><?php echo $lastnameErr;?></span><br>
-                        <label>Email:</label>
-                        <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
-                        <label>Mobile No:</label>
-                        <input type="text" name="mobileno" maxlength="10  " placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
-                        <label>Password:</label>
-                        <input type="password" name="password" placeholder="Enter Password Here"><br><span class="error"><?php echo $passwordErr;?></span><br>
-                        <label>Confirm Password:</label>
-                        <input type="password" name="cpassword" placeholder="Enter Confirm Password Here"><br><span class="error"><?php echo $cpasswordErr;?></span><br>
-                        <button class="btnn">Signup</button>
-                        <p class="par">if you are already <a href="login.php">login</a></p>
-                    </form>
-               </div>
-    </div>
+  <div class="main">
+    <div class="navbar">
+        <div class="icon">
+            <h2 class="logo">PHP</h2>
+        </div>         
+    </div> 
+    
+    <div class="form">
+        <form action="signup1.php" method="post" enctype="multipart/form-data">
+            <h2>Signup Here</h2>
+            <label>Select image:</label>
+            <input type="file" name="image" id=""><br>
+            <label>first name:</label>
+            <input type="text" name="firstname" placeholder="Enter firstname Here"><br><span class="error"><?php echo $firstnameErr;?></span><br>
+            <label>Last name:</label>
+            <input type="text" name="lastname" placeholder="Enter lastname Here"><br><span class="error"><?php echo $lastnameErr;?></span><br>
+            <label>Email:</label>
+            <input type="text" name="email" placeholder="Enter email Here"><br><span class="error"><?php echo $emailErr;?></span><br>
+            <label>Mobile No:</label>
+            <input type="text" name="mobileno" maxlength="10" placeholder="Enter mobileno Here"><br><span class="error"><?php echo $mobilenoErr;?></span><br>
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="Enter Password Here"><br><span class="error"><?php echo $passwordErr;?></span><br>
+            <label>Confirm Password:</label>
+            <input type="password" name="cpassword" placeholder="Enter Confirm Password Here"><br><span class="error"><?php echo $cpasswordErr;?></span><br>
+            <button class="btnn">Signup</button>
+            <p class="par">if you are already <a href="login.php">login</a></p>
+        </form>
+     </div>
+  </div>
 </body>
 </html>

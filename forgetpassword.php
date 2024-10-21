@@ -1,11 +1,11 @@
 <?php
 
 
-        include "_dbconnect.php";
+include "_dbconnect.php";
 
-        use PHPMailer\PHPMailer\PHPMailer;
-        use PHPMailer\PHPMailer\SMTP;
-        use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
 
     function sendmail($email,$reset_token){
         require('C:\xampp2\htdocs\project\phpmailer\PHPMailer.php');

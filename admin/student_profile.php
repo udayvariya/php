@@ -97,16 +97,15 @@ else{
           </div>
         </form>
       </div>
-    </div>
   </div>
+</div>
 
-    <a href="admin_home.php">
-        <i class="fa-solid fa-chevron-left"></i>
-    </a>
-    <h2> Student Details</h2>
-    <div class="container my-4">
-
-
+  <a href="admin_home.php">
+      <i class="fa-solid fa-chevron-left"></i>
+  </a>
+  <h2> Student Details</h2>
+  
+  <div class="container my-4">
     <table class="table" id="myTable">
       <thead>
         <tr>
@@ -122,10 +121,8 @@ else{
       </thead>
       <tbody>
         <?php 
-
           $sql = "SELECT * FROM `data`";
           $result = mysqli_query($conn, $sql); 
-
             $sno = 0;
             while($row = mysqli_fetch_assoc($result)){
               $sno = $sno + 1;
@@ -140,19 +137,15 @@ else{
             <td>". $row['mobileno'] . "</td>
             <td>". $row['status'] . "</td>
             <td> <button class='edit btn btn-sm btn-primary' id=".$row['sno'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['sno'].">Delete</button>  </td>
-
-            
              </tr>";
-        } 
-          ?>
-
-
+            } 
+        ?>
       </tbody>
     </table>
   </div>
   
-  <script>
-    edits = document.getElementsByClassName('edit');
+<script>
+  edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit");
@@ -172,10 +165,10 @@ else{
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');
-      });
     });
+  });
 
-    deletes = document.getElementsByClassName('delete');
+  deletes = document.getElementsByClassName('delete');
     Array.from(deletes).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit ");
@@ -197,7 +190,6 @@ else{
       });
       })
     })
-  </script>
-</body>
-    
+</script>
+</body>    
 </html>

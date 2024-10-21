@@ -3,7 +3,6 @@
 include "page_hide.php";
 include "_dbconnect.php";
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     if (isset( $_POST['snoEdit'])){
         $sno = $_POST["snoEdit"];   
@@ -43,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-      
     <title>Admin_profile</title>
     <link rel="stylesheet" href="/project/style/admin_profile.css">
 </head>
@@ -87,21 +85,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
-      </div>
     </div>
   </div>
+</div>
 
-    <a href="admin_home.php">
-        <i class="fa-solid fa-chevron-left"></i>
-    </a>
-    <h2> Your Details</h2>
-    <div class="container my-4">
-
-
+  <a href="admin_home.php">
+    <i class="fa-solid fa-chevron-left"></i>
+  </a>
+  <h2> Your Details</h2>
+    
+  <div class="container my-4">
     <table class="table" id="myTable">
-    <thead>
+      <thead>
         <tr>
-          <!-- <th>S.No</th> -->
           <th>Profile_image</th>
           <th>First name</th>
           <th>Lastname</th>
@@ -110,10 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           <th>Action</th>
         </tr>
       </thead>
-    
       <tbody>
         <?php 
-
           $sql = "SELECT * FROM `admin_data` where email = '$_SESSION[email1]'";
           $result = mysqli_query($conn, $sql);
           while($row = mysqli_fetch_assoc($result)){
@@ -129,18 +123,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button>
             </tr>
             <br><br>";
-
-        } 
-          ?>
-
-
+          } 
+        ?>
       </tbody>
-      
     </table>
     <p class="liw2"><a href="/project/admin/admin_forget.php">Forget Password</a></p>
-  </div>
-  <script>
-    edits = document.getElementsByClassName('edit');
+</div>
+  
+<script>
+  edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit");
@@ -160,10 +151,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         snoEdit.value = e.target.id;
         console.log(e.target.id)
         $('#editModal').modal('toggle');
-      });
     });
-
-    
-  </script>
+  });    
+</script>
 </body>
 </html>

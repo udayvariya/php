@@ -85,3 +85,6 @@ td {
     border-radius: 7px;
     margin-left: 15px;
 }
+.active{
+    background-color: rgb(10, 10, 61);
+}

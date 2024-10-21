@@ -9,6 +9,7 @@ $login  = false;
 $showAlert = false;
 $showError = false;
 $showmsg = false;
+$msg = false;
 
 include '_dbconnect.php';
 
@@ -47,7 +48,6 @@ if (isset( $_POST['snoEdit'])){
 
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -68,63 +68,28 @@ if (isset( $_POST['snoEdit'])){
   <script src="sweetalert2.min.js"></script>
   <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  
   <!-- <link rel="stylesheet" href="/project/style/admin_dashbord.css"> -->
-  <link rel="stylesheet" href="/project/style/admin_dashbord.css">
-
-
-
+  <link rel="stylesheet" href="/project/style/admin_dashbord1.css">
   <title>Admin_dashbord</title>
-  
 </head>
-
 <body>
 <?php
-
-
-
-if($update){
-  echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Success!</strong>Record updated sucessfully.
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">×</span>
-  </button>
-  </div> ';
-  
-}
-if($showError){
-echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error!</strong> '. $showError.'
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-  <span aria-hidden="true">×</span>
-      </button>
-  </div> ';
-}
-if($showmsg){
-  echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>Error! Please Fill All Filed </strong> 
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">×</span>
-        </button>
-    </div> ';
-  }
+include "alert.php";
 ?>
+
 <div class="navbar">
-      
-            <div class="icon">
-                <h3 class="logo">PHP</h2>
-            </div>
+  <div class="icon">
+    <h3 class="logo">PHP</h3>
+  </div>
+  <div class="menu">
+    <ul>
+      <li><a href="admin_home.php">HOME</a></li>
+      <li><a href="admin_logout.php">LOGOUT</a></li>
+    </ul>
+  </div>
+</div>
 
-            <div class="menu">
-                <ul>
-                    <li><a href="admin_home.php">HOME</a></li>
-                    <li><a href="admin_logout.php">LOGOUT</a></li>
-                </ul>
-            </div>
 
-           
-        </div>
   <!-- Edit Modal -->
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
     aria-hidden="true">
@@ -169,14 +134,14 @@ if($showmsg){
     </div>
   </div>
 
-  <div class="container my-4">
+<div class="container my-4">
   <div class="search">
-  <label><b>  Start Date : </b></label>
+    <label><b>  Start Date : </b></label>
     <input id="startDate" type="date" name = "date1">
-  <label><b>  End Date : </b></label>
+    <label><b>  End Date : </b></label>
     <input id="endDate" type="date" name="date2">
     <button id="filterData">Search</button>
-    </div>
+  </div>
   <br>  
     <table class="table">
       <thead>
@@ -221,9 +186,9 @@ if($showmsg){
           </tr>";
         }
           ?>
-</tbody>
-</table>
-<?php
+      </tbody>
+    </table>
+    <?php
     $sql1 = "SELECT * FROM query";
     $result = mysqli_query($conn,$sql1);
     
@@ -240,25 +205,21 @@ if($showmsg){
       else{
         $active = "";
       }
-      for ($i=1; $i <= $totalPages; $i++) { 
+      for ($i=1; $i <= 3; $i++) { 
         
-        echo '<a href="?page='.$i.'" ><li class = "'.$active.'">'.$i.'</li></a>';
+        echo '<a href="?page='.$i.'" ><li class = ".$active.">'.$i.'</li></a>';
         
       } 
       if($totalPages > $page){
       echo '<a href="?page='.($page+1).'"><li>Next</li></a>';
-      }
-        // if($totalPages>2){
-        //   echo '<a href="?page='.$i.'"><li>Next</li></a>';
-        // }
-      
+      }  
       echo '</ul>';
     } 
     ?>
-  </div>
-  <hr>
-  
-  <script>
+</div>
+<hr>
+    
+<script>
   $(document).ready(function() {
     $('#filterData').click(function() {
         var startText = $('#startDate').val();
@@ -274,11 +235,10 @@ if($showmsg){
         });
     });
   });
-
 </script>
 
-  <script>
-    edits = document.getElementsByClassName('edit');
+<script>
+  edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit ");
@@ -299,14 +259,13 @@ if($showmsg){
         console.log(e.target.id)
         $('#editModal').modal('toggle');
       })
-    })
+  })
 
-    deletes = document.getElementsByClassName('delete');
+  deletes = document.getElementsByClassName('delete');
     Array.from(deletes).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit ");
         sno = e.target.id.substr(1);
-
         Swal.fire({
             title: "Do you want to Delete?",
             showDenyButton: true,
@@ -323,7 +282,6 @@ if($showmsg){
       });
       })
     })
-  </script>
+</script>
 </body>
-
 </html>

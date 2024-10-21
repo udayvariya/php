@@ -157,8 +157,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </table>
     <p><a href="/project/forget.php">Forget Password</a></p>
   </div>
-  <script>
-    edits = document.getElementsByClassName('edit');
+<script>
+  edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit");
@@ -180,9 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $('#editModal').modal('toggle');
       });
     });
-
-    
-  </script>
-
+</script>
 </body>
 </html> 

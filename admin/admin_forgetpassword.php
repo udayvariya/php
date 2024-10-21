@@ -1,11 +1,10 @@
 <?php
+    
+include "_dbconnect.php";
 
-
-        include "_dbconnect.php";
-
-        use PHPMailer\PHPMailer\PHPMailer;
-        use PHPMailer\PHPMailer\SMTP;
-        use PHPMailer\PHPMailer\Exception;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
 
     function sendmail($email,$reset_token){
         require('C:\xampp2\htdocs\project\phpmailer\PHPMailer.php');
@@ -27,8 +26,7 @@
             //Recipients
             $mail->setFrom('udayvariya302@gmail.com', 'UDAY PASS');
             $mail->addAddress($email);     //Add a recipient
-        
-            
+    
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = 'Password Reset Link from uday';
@@ -42,14 +40,12 @@
         catch (Exception $e) {
             return false;
         }
-
     }
     if(isset($_POST['send-email-link'])){
     $sql = "SELECT * FROM `admin_data` WHERE email = '$_POST[email]'";
     $result = mysqli_query($conn,$sql);
     if($result){
         if(mysqli_num_rows($result) == 1){
-            
             $reset_token = bin2hex(random_bytes(16));
             date_default_timezone_set('Asia/kolkata');
             $date=date('y-m-d');

@@ -6,13 +6,16 @@ $login = false;
 $showError = false;
 $logout = true; 
 $error = false;
+$update = false;
+$showAlert = false;
+$showmsg = false;
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     include '_dbconnect.php';
     $email = $_POST["email"];
     $password = $_POST["password"]; 
-  
-     
+
     $sql = "Select * from admin_data where email='$email' AND password='$password'";
     $result = mysqli_query($conn, $sql);
     $num = mysqli_num_rows($result);
@@ -22,19 +25,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         session_start();
         $_SESSION['loggedin1'] = true;
         $_SESSION['email1'] = $email;
-        
-
         header("location: admin_home.php");
     } 
     else{
         $error = " *Invalid Candidate";
     }
 }
-    
 ?>
-    
-    
-   
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,64 +47,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
 <?php
-if($login){
-    echo ' <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <strong>Success!</strong> You are logged in
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-        </button>
-    </div> ';
-    }
-    $msg = false;
-    if($msg == true){
-    echo ' <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Error!</strong> '. $showError.'
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-        </button>
-    </div> ';
-    }
-    ?>
-    <div class="main">
-        <div class="navbar">
-            <div class="icon">
-                <h2 class="logo">PHP</h2>
-            </div>
+include "alert.php";
+?>
 
-            <div class="menu">
-                <ul>
-                    <li><a href="/project/home.php">HOME</a></li>
-                    <li><a href="admin_login.php">LOGIN</a></li>
-                    <li><a href="admin_dashbord.php">DASHBORD</a></li>
-
-            
-                </ul>
-            </div>
-
-           
-        </div> 
-        <div class="content">
-            <h1>PROJECT <br><span>MANAGEMENT</span> <br>SYSTEM</h1>
-            <p class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt neque 
-                 expedita atque eveniet <br> quis nesciunt. Quos nulla vero consequuntur, fugit nemo ad delectus 
-                <br> a quae totam ipsa illum minus laudantium?</p>
-
-
-                <form action="admin_login.php" method="post">
-                <div class="form">
-                    <h2>Login Admin</h2>
-                    <input type="text" name="email" placeholder="Enter email Here">
-                    <input type="password" name="password" placeholder="Enter Password Here"><br><br><h4 style="color: red;"><?php echo $error;?></h4>
-                    <button class="btnn">Login</a></button>
-
-                    <p class="link">Change Password</p><br>
-                    <p class="liw2"><a href="/project/admin/admin_forget.php">Forget Password ?</a></p>
-
-                    
-                </div>
-            </form>
-
+<div class="main">
+    <div class="navbar">
+        <div class="icon">
+            <h2 class="logo">PHP</h2>
         </div>
+        <div class="menu">
+            <ul>
+                <li><a href="/project/home.php">HOME</a></li>
+                <li><a href="admin_login.php">LOGIN</a></li>
+                <li><a href="admin_dashbord.php">DASHBORD</a></li>    
+            </ul>
+        </div>   
+    </div> 
+    <div class="content">
+        <h1>PROJECT <br><span>MANAGEMENT</span> <br>SYSTEM</h1>
+            <p class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt neque 
+             expedita atque eveniet <br> quis nesciunt. Quos nulla vero consequuntur, fugit nemo ad delectus 
+            <br> a quae totam ipsa illum minus laudantium?</p>
+    
+        <form action="admin_login.php" method="post">
+            <div class="form">
+                <h2>Login Admin</h2>
+                <input type="text" name="email" placeholder="Enter email Here">
+                <input type="password" name="password" placeholder="Enter Password Here"><br><br><h4 style="color: red;"><?php echo $error;?></h4>
+                <button class="btnn">Login</a></button>
+                <p class="link">Change Password</p><br>
+                <p class="liw2"><a href="/project/admin/admin_forget.php">Forget Password ?</a></p>
+            </div>
+        </form>
     </div>
+</div>
 </body>
 </html>
