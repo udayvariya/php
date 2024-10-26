@@ -19,12 +19,16 @@ include '_dbconnect.php';
 
 $dateErr = $pagenameErr = $linenoErr = $queryErr = $dateErr1 = $pagenameErr1 = $linenoErr1 = $queryErr1 = "";
 
-if (isset($_POST['delete'])) {
-  $sno = $_POST['delete'];
-  $delete = true;
+if (isset($_GET['delete'])) {
+  $sno = $_GET['delete'];
   $sql = "DELETE FROM `query` WHERE `qid` = $sno";
   $result = mysqli_query($conn, $sql);
+  if($result){
+    $delete = true;
+  }
 }
+
+
 if (isset($_REQUEST["edit"])) {
   $sno = $_POST['qid'];
   if (empty($_POST["date"])) {
@@ -188,7 +192,6 @@ include "alert.php";
           </div>
           <div class="modal-footer d-block mr-auto">
             <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
-
             <button type="submit" name="edit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
@@ -262,10 +265,12 @@ include "alert.php";
             <td>" . $row['query'] . "</td>
             <td>" . $row['comment'] . "</td>
             <td>      
-            <button class='edit btn btn-sm btn-primary' id=" . $row['qid'] . ">Edit</button>    
+            <button class='edit btn btn-sm btn-primary' id=" . $row['qid'] . ">Edit</button>   
+            
             <button class='delete btn btn-sm btn-primary' id=d" . $row['qid'] . ">Delete</button>  </td>
             </tr>";
           }
+          // <a href='dashbord.php?QID=".$row['qid']."&DATE=".$row['date']."&PAGENAME=".$row['pagename']."&LINENO=".$row['lineno']."&QUERY=".$row['query']."'><button class='edit btn btn-sm btn-primary' id='.$row[qid].'>Edit</button></a>
 
     ?>
     </tbody>
@@ -298,8 +303,8 @@ include "alert.php";
   $(document).ready(function() {
     $(".edit").click(function() {
       $("#editmodel").modal('show');
-      qid = e.target.id.substr(1);
-    
+      sno = e.target.id.substr(1);
+      window.location = `dashbord.php?qid=${sno}`;
     });
   });
 

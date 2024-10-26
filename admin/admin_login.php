@@ -9,6 +9,8 @@ $error = false;
 $update = false;
 $showAlert = false;
 $showmsg = false;
+$msg = false;
+$delete = false;
 
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){

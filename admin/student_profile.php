@@ -3,11 +3,23 @@
 include "page_hide.php";        
 include "_dbconnect.php";
 
+$insert = false;
+$update = false;
+$delete = false;
+$showmsg = false;
+$msg = false;
+$showAlert = false;
+$showError = false;
+$login = false;
+
 if(isset($_GET['delete'])){
   $sno = $_GET['delete'];
   $delete = true;
   $sql = "DELETE FROM `data` WHERE `sno` = $sno";
   $result = mysqli_query($conn, $sql);
+  if($result){
+    $delete = true;
+  }
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 if (isset( $_POST['snoEdit'])){
@@ -99,7 +111,9 @@ else{
       </div>
   </div>
 </div>
-
+<?php
+include "alert.php";
+?>
   <a href="admin_home.php">
       <i class="fa-solid fa-chevron-left"></i>
   </a>

@@ -98,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <table class="table" id="myTable">
       <thead>
         <tr>
+          <th>No</th>
           <th>Profile_image</th>
           <th>First name</th>
           <th>Lastname</th>
@@ -112,7 +113,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
           $result = mysqli_query($conn, $sql);
           while($row = mysqli_fetch_assoc($result)){
             echo "
+
             <tr>
+            <th>1</th>
             <td>
               <img height='130px' width='160px' src='/project/images/" . htmlspecialchars($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%; cursor: pointer;'>
             </td>
@@ -120,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             <td>".$row['lastname']."</td>
             <td>".$row['email']."</td>
             <td>".$row['mobileno']."</td>
-            <td> <button class='edit btn btn-md btn-primary' id=".$row['sno'].">Edit</button>
+            <td> <button class='edit btn btn-md btn-primary' id=".$row['A_id'].">Edit</button>
             </tr>
             <br><br>";
           } 

@@ -51,6 +51,7 @@ $update = false;
 $showmsg = false;
 $login = false;
 $msg = false;
+$delete = false;
 
 $fname = true;
 $lname = true;

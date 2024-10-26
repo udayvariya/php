@@ -211,7 +211,11 @@ include "alert.php";
         
       } 
       if($totalPages > $page){
+        if($page <= 3)
       echo '<a href="?page='.($page+1).'"><li>Next</li></a>';
+    else{
+      echo '<a href="?page='.($page+1).'"><li>Next</li></a>';
+    }
       }  
       echo '</ul>';
     } 
