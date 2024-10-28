@@ -28,7 +28,6 @@ if (isset($_GET['delete'])) {
   }
 }
 
-
 if(isset($_POST['click_edit_btn'])){
   $qid = $_POST['qid'];
   $arrayreult = [];
