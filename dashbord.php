@@ -28,23 +28,6 @@ if (isset($_GET['delete'])) {
   }
 }
 
-if(isset($_POST['click_edit_btn'])){
-  $qid = $_POST['qid'];
-  $arrayreult = [];
-
-  $fetch_query = "SELECT * FROM `query` WHERE qid = '$qid'";
-  $fetch_query_run = mysqli_query($conn,$fetch_query);
-
-  if(mysqli_num_rows($fetch_query_run) > 0){
-    while($row = mysqli_fetch_array($fetch_query_run)){
-        array_push($arrayreult,$row);
-        header('content-type: application/json');
-        echo json_encode($arrayreult);
-
-    }
-  }
-}
-
 if (isset($_REQUEST["edit"])) {
   $sno = $_POST['qid'];
   if (empty($_POST["date"])) {
