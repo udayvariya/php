@@ -150,9 +150,7 @@ if (isset($_REQUEST["edit"])) {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js" integrity="sha512-OlF0YFB8FRtvtNaGojDXbPT7LgcsSB3hj0IZKaVjzFix+BReDmTWhntaXBup8qwwoHrTHvwTxhLeoUqrYY9SEw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="/project/style/dashbord.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.4/jquery.xdomainrequest.min.js" integrity="sha512-AqrEfeiUZBu9nWx7jHZlve8pPY3Mavhhwobv+pVxTSc10vpElmhFNDqe8DopVSvApKGfUrOQO3OshR8avd+pTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-  
+
   <title>User_dashbord</title>
 </head>
 
@@ -186,7 +184,7 @@ include "alert.php";
       
       <form action="dashbord.php" method="POST">
           <div class="modal-body">
-            <!-- <input type="hidden" name="qid" > -->
+            <input type="hidden" name="qid" id="qid">
             <div class="form-group">
               <label>Date :</label>
               <input type="date" class="form-control" id = "date" name="date" ><span class="error"><?php echo $dateErr; ?></span><br>
@@ -218,7 +216,7 @@ include "alert.php";
   <form action="dashbord.php" method="POST">
     <div class="form-group">
       <label>Date :</label>
-      <input type="date" class="form-control" id="date" name="date"><span class="error"><?php echo $dateErr1; ?></span> 
+      <input type="date" class="form-control" name="date"><span class="error"><?php echo $dateErr1; ?></span> 
     </div>
     <div class="form-group">
         <label>Pagename :</label>
@@ -273,15 +271,15 @@ include "alert.php";
           $sno = $sno + 1;
           echo "<tr data-date = " . $row['date'] . ">
             <td class='qid'>" . $row['qid'] . "</td>
-            <td>" . $row['date'] . "</td>
-            <td>" . $row['pagename'] . "</td>
-            <td>" . $row['lineno'] . "</td>
-            <td>" . $row['query'] . "</td>
+            <td class='date'>" . $row['date'] . "</td>
+            <td class='pagename'>" . $row['pagename'] . "</td>
+            <td class='lineno'>" . $row['lineno'] . "</td>
+            <td class='query'>" . $row['query'] . "</td>
             <td>" . $row['comment'] . "</td>
             <td>      
-            <button class='btn btn-sm btn-primary edit_data'>Edit</button>
+            <button class='btn btn-sm btn-primary edit'>Edit</button>
             
-            <button class='delete btn btn-sm btn-primary' id=d" . $row['qid'] . ">Delete</button>  </td>
+            <button class='delete btn btn-sm btn-primary delete'>Delete</button>  </td>
             </tr>";
           }
           // <a href='dashbord.php?QID=".$row['qid']."&DATE=".$row['date']."&PAGENAME=".$row['pagename']."&LINENO=".$row['lineno']."&QUERY=".$row['query']."'><button class='edit btn btn-sm btn-primary' id='.$row[qid].'>Edit</button></a>
@@ -318,48 +316,42 @@ include "alert.php";
     $("#editmodel").modal('show');
     sno = e.target.id.substr(1);
     window.location = `dashbord.php?qid=${sno}`;
-  });
-}); -->
+    });
+    }); -->
+    
+    <!-- deletes = document.getElementsByClassName('delete');
+      Array.from(deletes).forEach((element) => {
+        element.addEventListener("click", (e) => {
+              sno = e.target.id.substr(1); -->
+
 <script>
 
   $(document).ready(function() {
-      $('.edit_data').click(function(e) {
-        e.preventDefault();
+      $('.edit').click(function() {
         
           var qid = $(this).closest('tr').find('.qid').text();
-          console.log(qid);
-          $.ajax({
-            method : "POST",
-            url : "dashbord.php",
-            data : {
-                'click_edit_btn': true,
-                'qid': qid
-              },
+          var date = $(this).closest('tr').find('.date').text();
+          var pagename = $(this).closest('tr').find('.pagename').text();
+          var lineno = $(this).closest('tr').find('.lineno').text();
+          var query = $(this).closest('tr').find('.query').text();
 
-            success:function(response){
-              // console.log(response);
-              
-              $.each(response , function(key, value){
+          console.log(qid,date,pagename,lineno,query);
+      
+          $('#editmodel').modal('show');
+            
+            $('#qid').val(qid);
+            $('#date').val(date);
+            $('#pagename').val(pagename);
+            $('#lineno').val(lineno);
+            $('#query').val(query);
 
-                // console.log(value['pagename']);
-                $('#date').val(value['date']);
-                $('#pagename').val(value['pagename']);
-                $('#lineno').val(value['lineno']);
-                $('#query').val(value['query']);
-                
-              });
-              
-              $('#editmodel').modal('show');
-              }
-          });
       });
   });
 
   // delete model 
-deletes = document.getElementsByClassName('delete');
-  Array.from(deletes).forEach((element) => {
-    element.addEventListener("click", (e) => {
-          sno = e.target.id.substr(1);
+  $(document).ready(function() {
+      $('.delete').click(function() {
+        var sno = $(this).closest('tr').find('.qid').text();
         Swal.fire({
           title: "Do you want to Delete?",
           showDenyButton: true,
