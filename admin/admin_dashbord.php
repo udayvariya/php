@@ -205,7 +205,9 @@ include "alert.php";
       else{
         $active = "";
       }
-      for ($i=1; $i <= 3; $i++) { 
+      // 3+ = 3
+      // 3- = any(1,2)
+      for ($i=1; $i <= $totalPages; $i++) { 
         
         echo '<a href="?page='.$i.'" ><li class = ".$active.">'.$i.'</li></a>';
         

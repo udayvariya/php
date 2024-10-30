@@ -108,6 +108,23 @@ if (isset($_REQUEST["edit"])) {
   }
 }
 
+if(isset($_POST['click_edit_btn'])){
+  $qid = $_POST['qid'];
+  $arrayresult = [];
+
+  $fetch_query = "select * from query where qid = '$qid'";
+  $fetch_query_run = mysqli_query($conn,$fetch_query);
+
+  if(mysqli_num_rows($fetch_query_run) > 0){
+    while ($row = mysqli_fetch_array($fetch_query_run)){
+
+        array_push($arrayresult,$row);
+        header('content-type : application/json');
+        echo json_encode($arrayresult);
+    }
+  }
+}
+
 ?>
 
 <!doctype html>
@@ -260,7 +277,7 @@ include "alert.php";
             <td class='query'>" . $row['query'] . "</td>
             <td>" . $row['comment'] . "</td>
             <td>      
-            <button class='btn btn-sm btn-primary edit'>Edit</button>
+            <button class='btn btn-sm btn-primary edit' id='.$row[qid].'>Edit</button>
             
             <button class='delete btn btn-sm btn-primary delete'>Delete</button>  </td>
             </tr>";
@@ -273,6 +290,27 @@ include "alert.php";
 </div>
 <hr>
 
+<!-- // $(document).ready(function() {
+//     $('.edit').click(function() {
+      
+//         var qid = $(this).closest('tr').find('.qid').text();
+//         var date = $(this).closest('tr').find('.date').text();
+//         var pagename = $(this).closest('tr').find('.pagename').text();
+//         var lineno = $(this).closest('tr').find('.lineno').text();
+//         var query = $(this).closest('tr').find('.query').text();
+
+//         console.log(qid,date,pagename,lineno,query);
+    
+//         $('#editmodel').modal('show');  
+          
+//           $('#qid').val(qid);
+//           $('#date').val(date);
+//           $('#pagename').val(pagename);
+//           $('#lineno').val(lineno);
+//           $('#query').val(query);
+
+//     });
+// }); -->
 
 <!-- Search date -->
 <script>
@@ -290,46 +328,41 @@ include "alert.php";
           }
         });
       });
-    });
-</script>
+    }); 
 
-<!-- edit Query -->
-<!-- $(document).ready(function() {
-  $(".edit").click(function() {
-    $("#editmodel").modal('show');
-    sno = e.target.id.substr(1);
-    window.location = `dashbord.php?qid=${sno}`;
-    });
-    }); -->
-    
-    <!-- deletes = document.getElementsByClassName('delete');
-      Array.from(deletes).forEach((element) => {
-        element.addEventListener("click", (e) => {
-              sno = e.target.id.substr(1); -->
 
-<script>
-
-  $(document).ready(function() {
+// edit model
+$(document).ready(function() {
       $('.edit').click(function() {
-        
+
           var qid = $(this).closest('tr').find('.qid').text();
-          var date = $(this).closest('tr').find('.date').text();
-          var pagename = $(this).closest('tr').find('.pagename').text();
-          var lineno = $(this).closest('tr').find('.lineno').text();
-          var query = $(this).closest('tr').find('.query').text();
-
-          console.log(qid,date,pagename,lineno,query);
-      
-          $('#editmodel').modal('show');
-            
-            $('#qid').val(qid);
-            $('#date').val(date);
-            $('#pagename').val(pagename);
-            $('#lineno').val(lineno);
-            $('#query').val(query);
-
+          console.log(qid);
+  
+          $.ajax({
+            url : 'dashbord.php',
+            method : 'POST',
+            data : {
+              'click_edit_btn' : true,
+              'qid' : qid,
+            },
+            success: function (response) {
+              $.each(response,function(key,value){
+                
+                // console.log(response);
+                
+                $('#qid').val(value['qid']);
+                $('#date').val(value['date']);
+                $('#pagename').val(value['pagename']);
+                $('#lineno').val(value['lineno']);
+                $('#query').val(value['query']);
+                
+              });
+              $('#editmodel').modal('show');
+            }
+          });
       });
-  });
+    });
+
 
   // delete model 
   $(document).ready(function() {
