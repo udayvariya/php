@@ -208,10 +208,11 @@ include "alert.php";
       // 3+ = 3
       // 3- = any(1,2)
       for ($i=1; $i <= $totalPages; $i++) { 
-        
+         if($i <= 3){
+          
         echo '<a href="?page='.$i.'" ><li class = ".$active.">'.$i.'</li></a>';
-        
-      } 
+         }
+      }   
       if($totalPages > $page){
         if($page <= 3)
       echo '<a href="?page='.($page+1).'"><li>Next</li></a>';

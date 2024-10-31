@@ -23,7 +23,7 @@ if (isset($_GET['delete'])) {
   $sno = $_GET['delete'];
   $sql = "DELETE FROM `query` WHERE `qid` = $sno";
   $result = mysqli_query($conn, $sql);
-  if($result){
+  if ($result) {
     $delete = true;
   }
 }
@@ -108,19 +108,19 @@ if (isset($_REQUEST["edit"])) {
   }
 }
 
-if(isset($_POST['click_edit_btn'])){
+if (isset($_POST['click_edit_btn'])) {
   $qid = $_POST['qid'];
   $arrayresult = [];
 
   $fetch_query = "select * from query where qid = '$qid'";
-  $fetch_query_run = mysqli_query($conn,$fetch_query);
+  $fetch_query_run = mysqli_query($conn, $fetch_query);
 
-  if(mysqli_num_rows($fetch_query_run) > 0){
-    while ($row = mysqli_fetch_array($fetch_query_run)){
+  if (mysqli_num_rows($fetch_query_run) > 0) {
+    while ($row = mysqli_fetch_array($fetch_query_run)) {
 
-        array_push($arrayresult,$row);
-        header('content-type : application/json');
-        echo json_encode($arrayresult);
+      array_push($arrayresult, $row);
+      header('content-type : application/json');
+      echo json_encode($arrayresult);
     }
   }
 }
@@ -129,6 +129,7 @@ if(isset($_POST['click_edit_btn'])){
 
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -148,17 +149,18 @@ if(isset($_POST['click_edit_btn'])){
   <script src="sweetalert2.min.js"></script>
   <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js" integrity="sha512-OlF0YFB8FRtvtNaGojDXbPT7LgcsSB3hj0IZKaVjzFix+BReDmTWhntaXBup8qwwoHrTHvwTxhLeoUqrYY9SEw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="stylesheet" href="/project/style/dashbord.css">
 
   <title>User_dashbord</title>
 </head>
 
 <body>
-<?php 
-include "alert.php";
-?>
-<div class="navbar">
+  <?php
+  include "alert.php";
+  ?>
+  <div class="navbar">
     <div class="icon">
       <h3 class="logo">PHP</h2>
     </div>
@@ -168,38 +170,38 @@ include "alert.php";
         <li><a href="profile.php">PROFILE</a></li>
       </ul>
     </div>
-</div>
+  </div>
 
 
   <!-- Edit Modal -->
-<div class="modal fade" id="editmodel" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit this Note</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      
-      <form action="dashbord.php" method="POST">
+  <div class="modal fade" id="editmodel" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit this Note</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <form action="dashbord.php" method="POST">
           <div class="modal-body">
             <input type="hidden" name="qid" id="qid">
             <div class="form-group">
               <label>Date :</label>
-              <input type="date" class="form-control" id = "date" name="date" ><span class="error"><?php echo $dateErr; ?></span><br>
+              <input type="date" class="form-control" id="date" name="date"><span class="error"><?php echo $dateErr; ?></span><br>
             </div>
             <div class="form-group">
               <label>Pagename :</label>
-              <input type="text" class="form-control" id = "pagename" name="pagename" ><span class="error"><?php echo $pagenameErr; ?></span><br>
+              <input type="text" class="form-control" id="pagename" name="pagename"><span class="error"><?php echo $pagenameErr; ?></span><br>
             </div>
             <div class="form-group">
               <label>Lineno :</label>
-              <input type="text" class="form-control"  id = "lineno" name="lineno" ><span class="error"><?php echo $linenoErr; ?></span><br>
+              <input type="text" class="form-control" id="lineno" name="lineno"><span class="error"><?php echo $linenoErr; ?></span><br>
             </div>
             <div class="form-group">
               <label>Query :</label>
-              <textarea id="query" class="form-control" id = "query" name="query" rows="3" ></textarea><span class="error"><?php echo $queryErr; ?></span><br>
+              <textarea id="query" class="form-control" id="query" name="query" rows="3"></textarea><span class="error"><?php echo $queryErr; ?></span><br>
             </div>
           </div>
           <div class="modal-footer d-block mr-auto">
@@ -207,58 +209,58 @@ include "alert.php";
             <button type="submit" name="edit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="container my-4">
-  <h2>Add a Note to Query</h2>
-  <form action="dashbord.php" method="POST">
-    <div class="form-group">
-      <label>Date :</label>
-      <input type="date" class="form-control" name="date"><span class="error"><?php echo $dateErr1; ?></span> 
-    </div>
-    <div class="form-group">
+  <div class="container my-4">
+    <h2>Add a Note to Query</h2>
+    <form action="dashbord.php" method="POST">
+      <div class="form-group">
+        <label>Date :</label>
+        <input type="date" class="form-control" name="date"><span class="error"><?php echo $dateErr1; ?></span>
+      </div>
+      <div class="form-group">
         <label>Pagename :</label>
         <input type="text" class="form-control" name="pagename"><span class="error"><?php echo $pagenameErr1; ?></span>
-    </div>
-    <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Lineno :</label>
         <input type="text" class="form-control" name="lineno"><span class="error"><?php echo $linenoErr1; ?></span>
-    </div>
-    <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Query :</label>
         <textarea class="form-control" name="query" rows="3"></textarea><span class="error"><?php echo $queryErr1; ?></span>
-    </div>
+      </div>
       <button type="submit" class="btn btn-primary">Add Note</button>
-  </form>
-</div>
+    </form>
+  </div>
 
 
-<div class="search">
-  <label><b> Start Date : </b></label>
-  <input id="startDate" type="date" name="date1">
-  <label><b> End Date : </b></label>
-  <input id="endDate" type="date" name="date2">
-  <button id="filterData">Search</button>
-</div>
+  <div class="search">
+    <label><b> Start Date : </b></label>
+    <input id="startDate" type="date" name="date1">
+    <label><b> End Date : </b></label>
+    <input id="endDate" type="date" name="date2">
+    <button id="filterData">Search</button>
+  </div>
 
 
-<div class="container my-4">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>S.No</th>
-        <th>Date</th>
-        <th>Pagename</th>
-        <th>Lineno</th>
-        <th>Query</th>
-        <th>Admin comment</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="myTable">
-    <?php
+  <div class="container my-4">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>S.No</th>
+          <th>Date</th>
+          <th>Pagename</th>
+          <th>Lineno</th>
+          <th>Query</th>
+          <th>Admin comment</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="myTable">
+        <?php
         $sql = "SELECT * FROM `data` where email = '$_SESSION[email]'";
         $result = mysqli_query($conn, $sql) or die("Query Failed.");
         while ($row = mysqli_fetch_assoc($result)) {
@@ -281,16 +283,16 @@ include "alert.php";
             
             <button class='delete btn btn-sm btn-primary delete'>Delete</button>  </td>
             </tr>";
-          }
-          // <a href='dashbord.php?QID=".$row['qid']."&DATE=".$row['date']."&PAGENAME=".$row['pagename']."&LINENO=".$row['lineno']."&QUERY=".$row['query']."'><button class='edit btn btn-sm btn-primary' id='.$row[qid].'>Edit</button></a>
+        }
+        // <a href='dashbord.php?QID=".$row['qid']."&DATE=".$row['date']."&PAGENAME=".$row['pagename']."&LINENO=".$row['lineno']."&QUERY=".$row['query']."'><button class='edit btn btn-sm btn-primary' id='.$row[qid].'>Edit</button></a>
 
-    ?>
-    </tbody>
-  </table>
-</div>
-<hr>
+        ?>
+      </tbody>
+    </table>
+  </div>
+  <hr>
 
-<!-- // $(document).ready(function() {
+  <!-- // $(document).ready(function() {
 //     $('.edit').click(function() {
       
 //         var qid = $(this).closest('tr').find('.qid').text();
@@ -312,8 +314,8 @@ include "alert.php";
 //     });
 // }); -->
 
-<!-- Search date -->
-<script>
+  <!-- Search date -->
+  <script>
     $(document).ready(function() {
       $('#filterData').click(function() {
         var startText = $('#startDate').val();
@@ -328,44 +330,39 @@ include "alert.php";
           }
         });
       });
-    }); 
+    });
 
 
-// edit model
-$(document).ready(function() {
+    // edit model
+    $(document).ready(function() {
       $('.edit').click(function() {
+        var qid = $(this).closest('tr').find('.qid').text();
+        console.log(qid); 
+        $.ajax({
+          url: 'test.php',
+          method: 'POST',
+          data: {
+            'click_edit_btn': true,
+            'qid': qid,
+          },
+          success: function(response) {
+            $.each(response, function(key, value) {
+              $('#qid').val(value['qid']);
+              $('#date').val(value['date']);
+              $('#pagename').val(value['pagename']);
+              $('#lineno').val(value['lineno']);
+              $('#query').val(value['query']);
 
-          var qid = $(this).closest('tr').find('.qid').text();
-          console.log(qid);
-  
-          $.ajax({
-            url : 'dashbord.php',
-            method : 'POST',
-            data : {
-              'click_edit_btn' : true,
-              'qid' : qid,
-            },
-            success: function (response) {
-              $.each(response,function(key,value){
-                
-                // console.log(response);
-                
-                $('#qid').val(value['qid']);
-                $('#date').val(value['date']);
-                $('#pagename').val(value['pagename']);
-                $('#lineno').val(value['lineno']);
-                $('#query').val(value['query']);
-                
-              });
-              $('#editmodel').modal('show');
-            }
-          });
+            });
+            $('#editmodel').modal('show');
+          }
+        });
       });
     });
 
 
-  // delete model 
-  $(document).ready(function() {
+    // delete model 
+    $(document).ready(function() {
       $('.delete').click(function() {
         var sno = $(this).closest('tr').find('.qid').text();
         Swal.fire({
@@ -384,6 +381,7 @@ $(document).ready(function() {
         });
       })
     })
-</script>
+  </script>
 </body>
+
 </html>
