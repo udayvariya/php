@@ -108,22 +108,6 @@ if (isset($_REQUEST["edit"])) {
   }
 }
 
-if (isset($_POST['click_edit_btn'])) {
-  $qid = $_POST['qid'];
-  $arrayresult = [];
-
-  $fetch_query = "select * from query where qid = '$qid'";
-  $fetch_query_run = mysqli_query($conn, $fetch_query);
-
-  if (mysqli_num_rows($fetch_query_run) > 0) {
-    while ($row = mysqli_fetch_array($fetch_query_run)) {
-
-      array_push($arrayresult, $row);
-      header('content-type : application/json');
-      echo json_encode($arrayresult);
-    }
-  }
-}
 
 ?>
 
@@ -146,11 +130,10 @@ if (isset($_POST['click_edit_btn'])) {
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
   <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-  <script src="sweetalert2.min.js"></script>
-  <link rel="stylesheet" href="sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.14.0/sweetalert2.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" href="/project/style/dashbord.css">
 
   <title>User_dashbord</title>
@@ -189,19 +172,19 @@ if (isset($_POST['click_edit_btn'])) {
             <input type="hidden" name="qid" id="qid">
             <div class="form-group">
               <label>Date :</label>
-              <input type="date" class="form-control" id="date" name="date"><span class="error"><?php echo $dateErr; ?></span><br>
+              <input type="date" class="form-control" id="date" name="date"><span class="error"><?php echo $dateErr; ?></span>
             </div>
             <div class="form-group">
               <label>Pagename :</label>
-              <input type="text" class="form-control" id="pagename" name="pagename"><span class="error"><?php echo $pagenameErr; ?></span><br>
+              <input type="text" class="form-control" id="pagename" name="pagename"><span class="error"><?php echo $pagenameErr; ?></span>
             </div>
             <div class="form-group">
               <label>Lineno :</label>
-              <input type="text" class="form-control" id="lineno" name="lineno"><span class="error"><?php echo $linenoErr; ?></span><br>
+              <input type="text" class="form-control" id="lineno" name="lineno"><span class="error"><?php echo $linenoErr; ?></span>
             </div>
             <div class="form-group">
               <label>Query :</label>
-              <textarea id="query" class="form-control" id="query" name="query" rows="3"></textarea><span class="error"><?php echo $queryErr; ?></span><br>
+              <textarea id="query" class="form-control" id="query" name="query" rows="3"></textarea><span class="error"><?php echo $queryErr; ?></span>
             </div>
           </div>
           <div class="modal-footer d-block mr-auto">
@@ -250,12 +233,12 @@ if (isset($_POST['click_edit_btn'])) {
     <table class="table">
       <thead>
         <tr>
-          <th>S.No</th>
+          <th>Q.No</th>
           <th>Date</th>
           <th>Pagename</th>
           <th>Lineno</th>
           <th>Query</th>
-          <th>Admin comment</th>
+          <th>Admin Comment</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -272,19 +255,19 @@ if (isset($_POST['click_edit_btn'])) {
         while ($row = mysqli_fetch_assoc($result)) {
           $sno = $sno + 1;
           echo "<tr data-date = " . $row['date'] . ">
-            <td class='qid'>" . $row['qid'] . "</td>
-            <td class='date'>" . $row['date'] . "</td>
-            <td class='pagename'>" . $row['pagename'] . "</td>
-            <td class='lineno'>" . $row['lineno'] . "</td>
-            <td class='query'>" . $row['query'] . "</td>
+          <td class='hidden'>" . $row['qid'] . "</td>
+            <th>" . $sno . "</th>
+            <td>" . $row['date'] . "</td>
+            <td>" . $row['pagename'] . "</td>
+            <td>" . $row['lineno'] . "</td>
+            <td>" . $row['query'] . "</td>
             <td>" . $row['comment'] . "</td>
             <td>      
-            <button class='btn btn-sm btn-primary edit' id='.$row[qid].'>Edit</button>
-            
-            <button class='delete btn btn-sm btn-primary delete'>Delete</button>  </td>
+              <button class='btn btn-sm btn-primary edit' id='.$row[qid].'>Edit</button>    
+              <button class='delete btn btn-sm btn-primary delete'>Delete</button> 
+            </td>
             </tr>";
         }
-        // <a href='dashbord.php?QID=".$row['qid']."&DATE=".$row['date']."&PAGENAME=".$row['pagename']."&LINENO=".$row['lineno']."&QUERY=".$row['query']."'><button class='edit btn btn-sm btn-primary' id='.$row[qid].'>Edit</button></a>
 
         ?>
       </tbody>
@@ -292,30 +275,8 @@ if (isset($_POST['click_edit_btn'])) {
   </div>
   <hr>
 
-  <!-- // $(document).ready(function() {
-//     $('.edit').click(function() {
-      
-//         var qid = $(this).closest('tr').find('.qid').text();
-//         var date = $(this).closest('tr').find('.date').text();
-//         var pagename = $(this).closest('tr').find('.pagename').text();
-//         var lineno = $(this).closest('tr').find('.lineno').text();
-//         var query = $(this).closest('tr').find('.query').text();
-
-//         console.log(qid,date,pagename,lineno,query);
-    
-//         $('#editmodel').modal('show');  
-          
-//           $('#qid').val(qid);
-//           $('#date').val(date);
-//           $('#pagename').val(pagename);
-//           $('#lineno').val(lineno);
-//           $('#query').val(query);
-
-//     });
-// }); -->
-
-  <!-- Search date -->
   <script>
+    // Search date
     $(document).ready(function() {
       $('#filterData').click(function() {
         var startText = $('#startDate').val();
@@ -336,23 +297,26 @@ if (isset($_POST['click_edit_btn'])) {
     // edit model
     $(document).ready(function() {
       $('.edit').click(function() {
-        var qid = $(this).closest('tr').find('.qid').text();
-        console.log(qid); 
+        var qid = $(this).closest('tr').find('.hidden').text();
+        // var qid = $(this).val();
+        console.log(qid);
         $.ajax({
-          url: 'test.php',
           method: 'POST',
+          url: 'test_query.php',
           data: {
             'click_edit_btn': true,
             'qid': qid,
           },
           success: function(response) {
-            $.each(response, function(key, value) {
+            console.log(response);
+            $.each(response, function(Key, value) {
+              // console.log(value['qid']);
               $('#qid').val(value['qid']);
               $('#date').val(value['date']);
               $('#pagename').val(value['pagename']);
               $('#lineno').val(value['lineno']);
               $('#query').val(value['query']);
-
+   
             });
             $('#editmodel').modal('show');
           }
@@ -364,7 +328,7 @@ if (isset($_POST['click_edit_btn'])) {
     // delete model 
     $(document).ready(function() {
       $('.delete').click(function() {
-        var sno = $(this).closest('tr').find('.qid').text();
+        var sno = $(this).closest('tr').find('.hidden').text();
         Swal.fire({
           title: "Do you want to Delete?",
           showDenyButton: true,

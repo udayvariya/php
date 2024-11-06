@@ -9,8 +9,8 @@ session_start();
 include "_dbconnect.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-  if (isset( $_POST['snoEdit'])){
-      $sno = $_POST["snoEdit"];   
+  if (isset( $_POST['sno'])){
+      $sno = $_POST["sno"];   
       $profile_image = $_POST["profile_image"];
       $firstname = $_POST["firstname"];
       $lastname = $_POST["lastname"];
@@ -47,6 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
   <title>User_profile</title>
     <style>
@@ -69,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     </style>
 </head>
 <body>
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+<div class="modal fade" id="editmodel" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -81,26 +83,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         </div>
         <form action="profile.php" method="POST">
           <div class="modal-body">
-            <input type="hidden" name="snoEdit" id="snoEdit">
+            <input type="hidden" name="snoEdit" id="sno">
             <div class="form-group">
               <label>Profile_image</label>
-              <input type="file" class="form-control" id="profile_image" name="profile_image">
+              <input type="file" class="form-control"  name="profile_image" id="profile_image">
             </div>
             <div class="form-group">
               <label>Firstname</label>
-              <input type="text" class="form-control" id="firstname" name="firstname">
+              <input type="text" class="form-control"  name="firstname" id="firstname">
             </div>
             <div class="form-group">
               <label>Lastname</label>
-              <input type="text" class="form-control" id="lastname" name="lastname">
+              <input type="text" class="form-control"  name="lastname" id="lastname">
             </div>
             <div class="form-group">
               <label>Email</label>
-              <input type="text" class="form-control" id="email" name="email">
+              <input type="text" class="form-control" name="email" id="email">
             </div> 
             <div class="form-group">
               <label>Mobileno</label>
-              <input type="text" class="form-control" id="mobileno" name="mobileno">
+              <input type="text" class="form-control"  name="mobileno" id="mobileno">
             </div> 
           </div>
           <div class="modal-footer d-block mr-auto">
@@ -140,6 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             echo "
             
             <tr>
+            <td class='hidden'>" . $row['sno'] . "</td>
             <td>".$row['sno']."</td>
             <td>
               <img height='125px' width='150px' src='/project/images/" . ($row['profile_image']) . "' alt='Image' class='rounded' style='max-width: 100%;  cursor: pointer;'>
@@ -158,28 +161,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <p><a href="/project/forget.php">Forget Password</a></p>
   </div>
 <script>
-  edits = document.getElementsByClassName('edit');
-    Array.from(edits).forEach((element) => {
-      element.addEventListener("click", (e) => {
-        console.log("edit");
-        tr = e.target.parentNode.parentNode;
-        // sno = th.getElementsbyTagname("th")[1].innerText;
-        profile_image1 = tr.getElementsByTagName("td")[1].innerText;
-        firstname1 = tr.getElementsByTagName("td")[2].innerText;
-        lastname1 = tr.getElementsByTagName("td")[3].innerText;
-        email1 = tr.getElementsByTagName("td")[4].innerText;
-        mobileno1 = tr.getElementsByTagName("td")[5].innerText;
-        console.log(profile_image1,firstname1,lastname1,email1,mobileno1);
-        profile_image.value = profile_image1;
-        firstname.value = firstname1;
-        lastname.value = lastname1; 
-        email.value = email1;
-        mobileno.value = mobileno1;
-        snoEdit.value = e.target.id;
-        console.log(e.target.id)
-        $('#editModal').modal('toggle');
+$(document).ready(function() {
+      $('.edit').click(function() {
+        var sno = $(this).closest('tr').find('.hidden').text();
+        console.log(sno);
+        $.ajax({
+          method: 'POST',
+          url: 'test_data.php',
+          data: {
+            'click_edit_btn': true,
+            'sno': sno,
+          },
+          success: function(response) {
+            // console.log(response);
+            $.each(response, function(Key, value) {
+              // console.log(value['sno']);
+              $('#sno').val(value['sno']);
+              $('#profile_image').val(value['profile_image']);
+              $('#firstname').val(value['firstname']);
+              $('#lastname').val(value['lastname']);
+              $('#email').val(value['email']);
+              $('#mobileno').val(value['mobileno']);
+
+            });
+            $('#editmodel').modal('show');
+          }
+        });
       });
     });
+
 </script>
 </body>
 </html> 
