@@ -61,8 +61,8 @@ include "_dbconnect.php";
                     alert("Resent password link send to email address");
                     </script>
                 ';
-            header("location: login.php");
-}
+            header("location: /project/login.php");
+            }
             else{
                 echo '
                     <script>

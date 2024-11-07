@@ -45,7 +45,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                     <div class='container'>
                     <form action='updatepassword.php' method = 'POST'>
                     <label>Create New Password</label><br>
-                    <input type='password' name='password' placeholder='Enter New Password'>
+                    <input type='password' name='password' maxlength='8' placeholder='Enter New Password'>
                     <button type='submit' name 'updatepassword'>UPDATE</button>
                     <input type='hidden' name='email' value ='$_GET[email]'>
                     </form>

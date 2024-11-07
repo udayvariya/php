@@ -18,7 +18,7 @@ $showError = false;
 include '_dbconnect.php';
 
 $dateErr = $pagenameErr = $linenoErr = $queryErr = $dateErr1 = $pagenameErr1 = $linenoErr1 = $queryErr1 = "";
-
+$date = $pagename = $lineno = $query = "";
 if (isset($_GET['delete'])) {
   $sno = $_GET['delete'];
   $sql = "DELETE FROM `query` WHERE `qid` = $sno";
@@ -33,29 +33,29 @@ if (isset($_REQUEST["edit"])) {
   if (empty($_POST["date"])) {
     $dateErr = " * Date is required";
   } else {
-    $date = ($_POST["date"]);
+    $date1 = ($_POST["date"]);
   }
 
   if (empty($_POST["pagename"])) {
     $pagenameErr = " * Pagename is required";
   } else {
-    $pagename = ($_POST["pagename"]);
+    $pagename1 = ($_POST["pagename"]);
   }
 
   if (empty($_POST["lineno"])) {
     $linenoErr = " * Lineno is required";
   } else {
-    $lineno = ($_POST["lineno"]);
+    $lineno1 = ($_POST["lineno"]);
   }
 
   if (empty($_POST["query"])) {
     $queryErr = " * Query is required";
   } else {
-    $query = ($_POST["query"]);
+    $query1 = ($_POST["query"]);
   }
 
   if (!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))) {
-    $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' WHERE `query`.`qid` = '$sno'";
+    $sql = "UPDATE `query` SET `date` = '$date1' , `pagename` = '$pagename1' , `lineno` = '$lineno1' ,`query` = '$query1' WHERE `query`.`qid` = '$sno'";
     $result = mysqli_query($conn, $sql) or die("Query Failed.");
     if ($result) {
       $update = true;
@@ -90,6 +90,8 @@ if (isset($_REQUEST["edit"])) {
     $lineno = ($_POST["lineno"]);
   }
 
+  // echo $_POST["query"] ?? '';die;
+
   if (empty($_POST["query"])) {
     $queryErr1 = " * Query is required";
   } else {
@@ -104,7 +106,8 @@ if (isset($_REQUEST["edit"])) {
       echo "The record was not inserted successfully because of this error ---> " . mysqli_error($conn);
     }
   } else {
-    $showmsg = true;
+      $showmsg = true;
+
   }
 }
 
@@ -161,7 +164,7 @@ if (isset($_REQUEST["edit"])) {
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Edit this Note</h5>
+          <h5 class="modal-title" id="editModalLabel">Edit This Note</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -197,25 +200,25 @@ if (isset($_REQUEST["edit"])) {
   </div>
 
   <div class="container my-4">
-    <h2>Add a Note to Query</h2>
+    <h2>Add Query</h2>
     <form action="dashbord.php" method="POST">
       <div class="form-group">
         <label>Date :</label>
-        <input type="date" class="form-control" name="date"><span class="error"><?php echo $dateErr1; ?></span>
+        <input type="date" class="form-control" name="date"  value="<?php echo $date;?>" ><span class="error"><?php echo $dateErr1; ?></span>
       </div>
       <div class="form-group">
         <label>Pagename :</label>
-        <input type="text" class="form-control" name="pagename"><span class="error"><?php echo $pagenameErr1; ?></span>
+        <input type="text" class="form-control" name="pagename" value="<?php echo $pagename;?>"><span class="error"><?php echo $pagenameErr1; ?></span>
       </div>
       <div class="form-group">
         <label>Lineno :</label>
-        <input type="text" class="form-control" name="lineno"><span class="error"><?php echo $linenoErr1; ?></span>
+        <input type="text" class="form-control" name="lineno" value="<?php echo $lineno;?>"><span class="error"><?php echo $linenoErr1; ?></span>
       </div>
       <div class="form-group">
         <label>Query :</label>
-        <textarea class="form-control" name="query" rows="3"></textarea><span class="error"><?php echo $queryErr1; ?></span>
+        <textarea class="form-control" name="query" rows="3"><?php echo $query;?></textarea><span class="error"><?php echo $queryErr1; ?></span>
       </div>
-      <button type="submit" class="btn btn-primary">Add Note</button>
+      <button type="submit" class="btn btn-primary add">Add Note</button>
     </form>
   </div>
 
@@ -263,8 +266,8 @@ if (isset($_REQUEST["edit"])) {
             <td>" . $row['query'] . "</td>
             <td>" . $row['comment'] . "</td>
             <td>      
-              <button class='btn btn-sm btn-primary edit' id='.$row[qid].'>Edit</button>    
-              <button class='delete btn btn-sm btn-primary delete'>Delete</button> 
+              <button class='btn btn-sm btn-primary edit' data-id='$row[qid]' id='.$row[qid].'>Edit</button>    
+              <button class='delete btn btn-sm btn-primary delete' data-id='$row[qid]' id='.$row[qid].'>Delete</button> 
             </td>
             </tr>";
         }
@@ -297,20 +300,16 @@ if (isset($_REQUEST["edit"])) {
     // edit model
     $(document).ready(function() {
       $('.edit').click(function() {
-        var qid = $(this).closest('tr').find('.hidden').text();
-        // var qid = $(this).val();
-        console.log(qid);
+        var id = $(this).data("id");
         $.ajax({
           method: 'POST',
           url: 'test_query.php',
           data: {
             'click_edit_btn': true,
-            'qid': qid,
+            'qid': id,
           },
           success: function(response) {
-            console.log(response);
             $.each(response, function(Key, value) {
-              // console.log(value['qid']);
               $('#qid').val(value['qid']);
               $('#date').val(value['date']);
               $('#pagename').val(value['pagename']);
@@ -324,11 +323,11 @@ if (isset($_REQUEST["edit"])) {
       });
     });
 
-
     // delete model 
     $(document).ready(function() {
       $('.delete').click(function() {
-        var sno = $(this).closest('tr').find('.hidden').text();
+        // var sno = $(this).closest('tr').find('.hidden').text();
+        var sno = $(this).data("id");
         Swal.fire({
           title: "Do you want to Delete?",
           showDenyButton: true,

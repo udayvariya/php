@@ -1,5 +1,4 @@
-
-<?php  
+<?php
 include "page_hide.php";
 
 $insert = false;
@@ -13,41 +12,39 @@ $msg = false;
 
 include '_dbconnect.php';
 
-if(isset($_GET['delete'])){
+if (isset($_GET['delete'])) {
   $sno = $_GET['delete'];
   $delete = true;
   $sql = "DELETE FROM `query` WHERE `qid` = $sno";
   $result = mysqli_query($conn, $sql);
 }
-if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-if (isset( $_POST['snoEdit'])){
-    $sno = $_POST["snoEdit"];   
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['snoEdit'])) {
+    $sno = $_POST["snoEdit"];
     $date = $_POST["date"];
     $pagename = $_POST["pagename"];
     $lineno = $_POST["lineno"];
     $query = $_POST["query"];
     $comment = $_POST["comment"];
-  if(!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))){
-  $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' ,`comment` = '$comment' WHERE `query`.`qid` = $sno";
-  $result = mysqli_query($conn, $sql);
-    if($result){
-      $update = true;
+    if (!empty(($_POST['date']) && ($_POST['pagename']) && ($_POST['lineno']) && ($_POST['query']))) {
+      $sql = "UPDATE `query` SET `date` = '$date' , `pagename` = '$pagename' , `lineno` = '$lineno' ,`query` = '$query' ,`comment` = '$comment' WHERE `query`.`qid` = $sno";
+      $result = mysqli_query($conn, $sql);
+      if ($result) {
+        $update = true;
+      } else {
+        echo "We could not update the record successfully";
+        $showError = true;
       }
-      else{
-      echo "We could not update the record successfully";
-      $showError = true;
-      }
-    }
-    else{
+    } else {
       $showmsg = true;
     }
-}
-
+  }
 }
 ?>
 
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -72,22 +69,23 @@ if (isset( $_POST['snoEdit'])){
   <link rel="stylesheet" href="/project/style/admin_dashbord1.css">
   <title>Admin_dashbord</title>
 </head>
-<body>
-<?php
-include "alert.php";
-?>
 
-<div class="navbar">
-  <div class="icon">
-    <h3 class="logo">PHP</h3>
+<body>
+  <?php
+  include "alert.php";
+  ?>
+
+  <div class="navbar">
+    <div class="icon">
+      <h3 class="logo">PHP</h3>
+    </div>
+    <div class="menu">
+      <ul>
+        <li><a href="admin_home.php">HOME</a></li>
+        <li><a href="admin_logout.php">LOGOUT</a></li>
+      </ul>
+    </div>
   </div>
-  <div class="menu">
-    <ul>
-      <li><a href="admin_home.php">HOME</a></li>
-      <li><a href="admin_logout.php">LOGOUT</a></li>
-    </ul>
-  </div>
-</div>
 
 
   <!-- Edit Modal -->
@@ -119,30 +117,30 @@ include "alert.php";
             <div class="form-group">
               <label>Query</label>
               <textarea id="query" class="form-control" name="query" rows="3"></textarea>
-            </div> 
+            </div>
             <div class="form-group">
               <label>Comment</label>
               <textarea id="comment" class="form-control" name="comment" rows="5"></textarea>
-            </div> 
+            </div>
           </div>
           <div class="modal-footer d-block mr-auto">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-<div class="container my-4">
-  <div class="search">
-    <label><b>  Start Date : </b></label>
-    <input id="startDate" type="date" name = "date1">
-    <label><b>  End Date : </b></label>
-    <input id="endDate" type="date" name="date2">
-    <button id="filterData">Search</button>
-  </div>
-  <br>  
+  <div class="container my-4">
+    <div class="search">
+      <label><b> Start Date : </b></label>
+      <input id="startDate" type="date" name="date1">
+      <label><b> End Date : </b></label>
+      <input id="endDate" type="date" name="date2">
+      <button id="filterData">Search</button>
+    </div>
+    <br>
     <table class="table">
       <thead>
         <tr>
@@ -156,96 +154,109 @@ include "alert.php";
           <th>Actions</th>
         </tr>
       </thead>
-      <tbody  id="myTable"  >
-        <?php 
-          $recordsPerPage = 5; // Number of records to show per page
-          if(isset($_GET['page'])){
+      <tbody id="myTable">
+        <?php
+        $recordsPerPage = 5; // Number of records to show per page
+        if (isset($_GET['page'])) {
           $page  = $_GET['page'];
-          }
-          else{
-            $page = 1;
-          }
-          $offset = ($page-1) * $recordsPerPage;
-                    // 1-1 *5 =0  record no starting to diplay 
-                    // 2-1 *5 = 5
-        
-          $sql = "SELECT `data`.firstname, `query`.* FROM `data` INNER JOIN `query` ON `data`.sno = query.sno ORDER BY `query`.`qid` DESC LIMIT {$offset},{$recordsPerPage} "; // {0}{3}  , 
-          $result = mysqli_query($conn, $sql);
-          $sno = 0;
-          while($row = mysqli_fetch_assoc($result)){
-            $sno = $sno + 1;
-            echo "<tr data-date = ". $row['date'] .">
-            <th scope='row'>". $sno . "</th>
-            <td>". $row['date'] . "</td>
-            <td>". $row['firstname'] . "</td>
-            <td>". $row['pagename'] . "</td>
-            <td>". $row['lineno'] . "</td>
-            <td>". $row['query'] . "</td>
-            <td>". $row['comment'] . "</td>
-            <td> <button class='edit btn btn-sm btn-primary' id=".$row['qid'].">Edit</button> <button class='delete btn btn-sm btn-primary' id=d".$row['qid'].">Delete</button>  </td>
+        } else {
+          $page = 1;
+        }
+        $offset = ($page - 1) * $recordsPerPage;
+        // 1-1 *5 =0  record no starting to diplay 
+        // 2-1 *5 = 5
+
+        $sql = "SELECT `data`.firstname, `query`.* FROM `data` INNER JOIN `query` ON `data`.sno = query.sno ORDER BY `query`.`qid` DESC LIMIT {$offset},{$recordsPerPage} "; // {0}{3}  , 
+        $result = mysqli_query($conn, $sql);
+        $sno = $offset;
+        while ($row = mysqli_fetch_assoc($result)) {
+          $sno = $sno + 1;
+          echo "<tr data-date = " . $row['date'] . ">
+            <th scope='row'>" . $sno . "</th>
+            <td>" . $row['date'] . "</td>
+            <td>" . $row['firstname'] . "</td>
+            <td>" . $row['pagename'] . "</td>
+            <td>" . $row['lineno'] . "</td>
+            <td>" . $row['query'] . "</td>
+            <td>" . $row['comment'] . "</td>
+            <td> <button class='edit btn btn-sm btn-primary' id=" . $row['qid'] . ">Edit</button> <button class='delete btn btn-sm btn-primary' id=d" . $row['qid'] . ">Delete</button>  </td>
           </tr>";
         }
-          ?>
+        ?>
       </tbody>
     </table>
     <?php
     $sql1 = "SELECT * FROM query";
-    $result = mysqli_query($conn,$sql1);
-    
-    if(mysqli_num_rows($result) > 0){
+    $result = mysqli_query($conn, $sql1);
+
+    if (mysqli_num_rows($result) > 0) {
       $total_record = mysqli_num_rows($result);
       $totalPages = ceil($total_record / $recordsPerPage);
       echo '<ul class="pagination">';
-      if($page >1){
-        echo '<a href="?page='.($page-1).'"><li>Previous</li></a>';
+      if ($page > 1) {
+        echo '<a href="?page=' . ($page - 1) . '"><li>Previous</li></a>';
       }
-      if($i = $page){
+      if ($i = $page) {
         $active = "active";
-      }
-      else{
+      } else {
         $active = "";
       }
-      // 3+ = 3
-      // 3- = any(1,2)
-      for ($i=1; $i <= $totalPages; $i++) { 
-         if($i <= 3){
-          
-        echo '<a href="?page='.$i.'" ><li class = ".$active.">'.$i.'</li></a>';
-         }
-      }   
-      if($totalPages > $page){
-        if($page <= 3)
-      echo '<a href="?page='.($page+1).'"><li>Next</li></a>';
-    else{
-      echo '<a href="?page='.($page+1).'"><li>Next</li></a>';
-    }
-      }  
-      echo '</ul>';
-    } 
-    ?>
-</div>
-<hr>
+      for ($i = 1; $i <= $totalPages; $i++) {
+
+        if ($page == 1) {
+          for($i=1; $i <= 3; $i++){
+            echo '<a href="?page=' . $i . '" ><li class = '.$active.'>' . $i . '</li></a>';
+          } break;
+        }
+        
+        if ($page > 1 && $page < $totalPages) {
+          for($i=($page-1); $i <= ($page + 1); $i++){
+            echo '<a href="?page=' . $i . '" ><li class = '.$active.'>' . $i . '</li></a>';
+          } break;
+        }
+        
+        if ($page == $totalPages) {
+            for($i=($totalPages-2); $i <= $totalPages; $i++){
+              echo '<a href="?page=' . $i . '" ><li class = '.$active.'>' . $i . '</li></a>';
+            }  
+        }
+        
+        if ($i <= 3) {
+
+          echo '<a href="?page=' . $i . '" ><li class = '.$active.'>' . $i . '</li></a>';
+        }
+      
+      }
+      if ($i > 1  &&  $page < $totalPages) {
+        echo '<a href="?page=' . ($page + 1) . '"><li>Next</li></a>';
+      }
     
-<script>
-  $(document).ready(function() {
-    $('#filterData').click(function() {
+      echo '</ul>';
+    }
+    ?>
+  </div>
+  <hr>
+
+  <script>
+    $(document).ready(function() {
+      $('#filterData').click(function() {
         var startText = $('#startDate').val();
         var endText = $('#endDate').val();
         $('#myTable tr').each(function() {
-            var itemDateText = $(this).data('date');
-            if (itemDateText >= startText && itemDateText <= endText) {
-              //  10-10-2024 >= 01-09-2024  &&   29-09-2024 <= 01-10-2024 (true)
-                $(this).show();
-            } else {
-                $(this).hide();
-            }
+          var itemDateText = $(this).data('date');
+          if (itemDateText >= startText && itemDateText <= endText) {
+            //  10-10-2024 >= 01-09-2024  &&   29-09-2024 <= 01-10-2024 (true)
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
         });
+      });
     });
-  });
-</script>
+  </script>
 
-<script>
-  edits = document.getElementsByClassName('edit');
+  <script>
+    edits = document.getElementsByClassName('edit');
     Array.from(edits).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit ");
@@ -256,7 +267,7 @@ include "alert.php";
         lineno1 = tr.getElementsByTagName("td")[3].innerText;
         query1 = tr.getElementsByTagName("td")[4].innerText;
         comment1 = tr.getElementsByTagName("td")[5].innerText;
-        console.log(date1,username1,pagename1,lineno1,query1,comment1);
+        console.log(date1, username1, pagename1, lineno1, query1, comment1);
         date.value = date1;
         pagename.value = pagename1;
         lineno.value = lineno1;
@@ -266,29 +277,30 @@ include "alert.php";
         console.log(e.target.id)
         $('#editModal').modal('toggle');
       })
-  })
+    })
 
-  deletes = document.getElementsByClassName('delete');
+    deletes = document.getElementsByClassName('delete');
     Array.from(deletes).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit ");
         sno = e.target.id.substr(1);
         Swal.fire({
-            title: "Do you want to Delete?",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Delete",
-            denyButtonText: `can't Delete `
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location = `admin_dashbord.php?delete=${sno}`;
-              Swal.fire("Delete!", "", "success");
-        } else if (result.isDenied) {
-        Swal.fire("Can Not Deleted!", "", "info");
-      }
-      });
+          title: "Do you want to Delete?",
+          showDenyButton: true,
+          showCancelButton: true,
+          confirmButtonText: "Delete",
+          denyButtonText: `can't Delete `
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location = `admin_dashbord.php?delete=${sno}`;
+            Swal.fire("Delete!", "", "success");
+          } else if (result.isDenied) {
+            Swal.fire("Can Not Deleted!", "", "info");
+          }
+        });
       })
     })
-</script>
+  </script>
 </body>
+
 </html>

@@ -18,5 +18,4 @@ if (isset($_POST['click_edit_btn'])) {
         }
     }
   }
-  
 ?>
