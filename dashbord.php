@@ -258,7 +258,6 @@ if (isset($_REQUEST["edit"])) {
         while ($row = mysqli_fetch_assoc($result)) {
           $sno = $sno + 1;
           echo "<tr data-date = " . $row['date'] . ">
-          <td class='hidden'>" . $row['qid'] . "</td>
             <th>" . $sno . "</th>
             <td>" . $row['date'] . "</td>
             <td>" . $row['pagename'] . "</td>

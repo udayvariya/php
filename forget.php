@@ -13,8 +13,8 @@
     <div class="container">
         <label>Enter your Email:</label><br>
         <input type="email" name="email" placeholder="Enter your Email"><br>
-        <button name="send-email-link">Submit</button>
+        <button name="send-email-link" >Submit</button>
     </div>
     </form>
 </body>
-</html>
+</html> 
